@@ -19,6 +19,8 @@ import {
   Minimize,
   ExternalLink,
   Share2,
+  Plus,
+  Minus,
 } from "lucide-react";
 import { BlogPost } from "../types/blog";
 import ReactMarkdown from "react-markdown";
@@ -69,32 +71,32 @@ export const PostModal = ({
         } p-0 overflow-hidden flex flex-col transition-all duration-300 shadow-lg border`}
         showCloseButton={false}
       >
-        <DialogHeader className="px-6 pt-6 pb-4 border-b flex-shrink-0">
+        <DialogHeader className="p-3 border-b flex-shrink-0">
           <div className="flex items-start justify-between">
-            <div className="flex items-start gap-3 flex-1 min-w-0">
+            <div className="flex items-start gap-1 flex-1 min-w-0">
               <AuthorInfo post={post} showMoreButton={false} />
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-0.5">
+              <button
+                onClick={handleOpenInNewPage}
+                className="w-4 h-4 rounded-full bg-green-500 hover:bg-green-600 transition-colors group"
+                title="Open in new page"
+              >
+                <div className="opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center w-full h-full">
+                  <ExternalLink className="w-2.5 h-2.5 text-green-900" />
+                </div>
+              </button>
               <button
                 onClick={handleFullscreenToggle}
-                className="w-4 h-4 rounded-full bg-green-500 hover:bg-green-600 transition-colors group"
+                className="w-4 h-4 rounded-full bg-yellow-500 hover:bg-yellow-600 transition-colors group"
                 title={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
               >
                 <div className="opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center w-full h-full">
                   {isFullscreen ? (
-                    <Minimize className="w-2.5 h-2.5 text-green-900" />
+                    <Minus className="w-2.5 h-2.5 text-yellow-900" />
                   ) : (
-                    <Maximize className="w-2.5 h-2.5 text-green-900" />
+                    <Plus className="w-2.5 h-2.5 text-yellow-900" />
                   )}
-                </div>
-              </button>
-              <button
-                onClick={handleOpenInNewPage}
-                className="w-4 h-4 rounded-full bg-yellow-500 hover:bg-yellow-600 transition-colors group"
-                title="Open in new page"
-              >
-                <div className="opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center w-full h-full">
-                  <ExternalLink className="w-2.5 h-2.5 text-yellow-900" />
                 </div>
               </button>
               <DialogClose asChild>
@@ -109,11 +111,11 @@ export const PostModal = ({
               </DialogClose>
             </div>
           </div>
-          <DialogTitle className="text-2xl font-bold mt-4">
+          <DialogTitle className="text-base font-bold mt-1 underline">
             {post.title}
           </DialogTitle>
-          <DialogDescription className="mt-2 flex items-center gap-2">
-            <div className="w-1 h-1 bg-primary rounded-full" />
+          <DialogDescription className="mt-0 flex items-center gap-1 text-xs">
+            <div className="w-0.5 h-0.5 bg-primary rounded-full" />
             Published {post.date} • {post.readTime}
           </DialogDescription>
         </DialogHeader>
