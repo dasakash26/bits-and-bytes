@@ -11,6 +11,7 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { Search, Moon, Sun, Code } from "lucide-react";
+import LoginButton from "./LoginButton";
 
 export function Header({ children }: { children: React.ReactNode }) {
   const navItems = [
@@ -112,10 +113,35 @@ export function Header({ children }: { children: React.ReactNode }) {
                 ))}
               </nav>
 
-              {/* Search & Theme Toggle */}
-              <div className="hidden md:flex items-center space-x-2">
+              {/* Theme Toggle, Search & Profile */}
+              <div className="hidden md:flex items-center space-x-3">
+                {mounted && (
+                  <button
+                    onClick={() =>
+                      setTheme(theme === "dark" ? "light" : "dark")
+                    }
+                    className={`rounded-2xl hover:bg-muted/50 transition-all duration-300 hover:scale-110 group border border-transparent hover:border-border/50 ${
+                      isScrolled ? "p-1.5" : "p-2"
+                    }`}
+                    aria-label="Toggle theme"
+                  >
+                    {theme === "dark" ? (
+                      <Sun
+                        className={`text-muted-foreground group-hover:text-yellow-500 group-hover:rotate-180 transition-all duration-500 ${
+                          isScrolled ? "h-3.5 w-3.5" : "h-4 w-4"
+                        }`}
+                      />
+                    ) : (
+                      <Moon
+                        className={`text-muted-foreground group-hover:text-blue-500 group-hover:-rotate-12 transition-all duration-300 ${
+                          isScrolled ? "h-3.5 w-3.5" : "h-4 w-4"
+                        }`}
+                      />
+                    )}
+                  </button>
+                )}
                 <button
-                  className={`flex items-center space-x-2 text-sm text-muted-foreground bg-muted/50 hover:bg-muted/70 rounded-2xl transition-all duration-300 hover:scale-105 ${
+                  className={`flex items-center space-x-2 text-sm text-muted-foreground bg-muted/50 hover:bg-muted/70 rounded-2xl transition-all duration-300 hover:scale-105 border border-border/50 hover:border-border ${
                     isScrolled ? "px-2.5 py-1" : "px-3 py-1.5"
                   }`}
                   onClick={() => setIsSearchOpen(true)}
@@ -136,48 +162,11 @@ export function Header({ children }: { children: React.ReactNode }) {
                     <span className="text-xs">⌘</span>K
                   </kbd>
                 </button>
-                {mounted && (
-                  <button
-                    onClick={() =>
-                      setTheme(theme === "dark" ? "light" : "dark")
-                    }
-                    className={`rounded-2xl hover:bg-muted/50 transition-all duration-300 hover:scale-110 group ${
-                      isScrolled ? "p-1.5" : "p-2"
-                    }`}
-                    aria-label="Toggle theme"
-                  >
-                    {theme === "dark" ? (
-                      <Sun
-                        className={`text-muted-foreground group-hover:text-yellow-500 group-hover:rotate-180 transition-all duration-500 ${
-                          isScrolled ? "h-3.5 w-3.5" : "h-4 w-4"
-                        }`}
-                      />
-                    ) : (
-                      <Moon
-                        className={`text-muted-foreground group-hover:text-blue-500 group-hover:-rotate-12 transition-all duration-300 ${
-                          isScrolled ? "h-3.5 w-3.5" : "h-4 w-4"
-                        }`}
-                      />
-                    )}
-                  </button>
-                )}
+                <LoginButton />
               </div>
 
-              {/* Mobile Search, Theme & Menu */}
+              {/* Mobile Theme, Search & Profile */}
               <div className="md:hidden flex items-center space-x-1">
-                <button
-                  className={`rounded-2xl hover:bg-muted/50 transition-all duration-300 hover:scale-110 ${
-                    isScrolled ? "p-1" : "p-1.5"
-                  }`}
-                  onClick={() => setIsSearchOpen(true)}
-                  aria-label="Search"
-                >
-                  <Search
-                    className={`text-muted-foreground transition-all duration-500 ${
-                      isScrolled ? "h-3.5 w-3.5" : "h-4 w-4"
-                    }`}
-                  />
-                </button>
                 {mounted && (
                   <button
                     onClick={() =>
@@ -203,6 +192,20 @@ export function Header({ children }: { children: React.ReactNode }) {
                     )}
                   </button>
                 )}
+                <button
+                  className={`rounded-2xl hover:bg-muted/50 transition-all duration-300 hover:scale-110 ${
+                    isScrolled ? "p-1" : "p-1.5"
+                  }`}
+                  onClick={() => setIsSearchOpen(true)}
+                  aria-label="Search"
+                >
+                  <Search
+                    className={`text-muted-foreground transition-all duration-500 ${
+                      isScrolled ? "h-3.5 w-3.5" : "h-4 w-4"
+                    }`}
+                  />
+                </button>
+                <LoginButton />
                 <button
                   className={`rounded-2xl hover:bg-muted/50 transition-all duration-300 hover:scale-110 group ${
                     isScrolled ? "p-1" : "p-1.5"

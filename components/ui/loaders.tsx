@@ -87,10 +87,11 @@ export const TrendingCardSkeleton = () => {
   );
 };
 
-// Skeleton for ProfileCard
+// Skeleton for ProfileCard (merged component)
 export const ProfileCardSkeleton = () => {
   return (
-    <Card className="bg-card border-border shadow-sm overflow-hidden">
+    <Card className="bg-card border-border shadow-sm overflow-hidden p-0">
+      {/* Profile Header */}
       <Skeleton className="h-20 w-full" />
       <CardContent className="relative pt-0 pb-6">
         <div className="flex flex-col items-center -mt-10">
@@ -102,54 +103,39 @@ export const ProfileCardSkeleton = () => {
             <Skeleton className="h-4 w-48 mx-auto" />
           </div>
 
-          <div className="flex gap-8 mt-4 p-4 bg-muted/30 rounded-xl">
-            <div className="text-center">
-              <Skeleton className="h-6 w-12 mx-auto mb-1" />
-              <Skeleton className="h-3 w-16" />
-            </div>
-            <div className="text-center">
-              <Skeleton className="h-6 w-12 mx-auto mb-1" />
-              <Skeleton className="h-3 w-16" />
-            </div>
-          </div>
-
           <div className="flex items-center gap-6 mt-4">
             <Skeleton className="h-4 w-16" />
             <Skeleton className="h-4 w-20" />
           </div>
         </div>
       </CardContent>
-    </Card>
-  );
-};
 
-// Skeleton for AnalyticsCard
-export const AnalyticsCardSkeleton = () => {
-  return (
-    <Card className="bg-card border-border shadow-sm">
-      <CardHeader className="pb-4">
-        <div className="flex items-center gap-2">
-          <Skeleton className="w-8 h-8 rounded-lg" />
-          <Skeleton className="h-5 w-32" />
-        </div>
-      </CardHeader>
-      <CardContent>
-        <div className="grid grid-cols-2 gap-4">
-          {Array.from({ length: 4 }).map((_, index) => (
-            <div key={index} className="p-4 rounded-lg border border-border">
-              <div className="flex items-center justify-between mb-3">
-                <Skeleton className="w-10 h-10 rounded-lg" />
-                <Skeleton className="h-5 w-12 rounded-full" />
+      {/* Analytics Section */}
+      <div className="border-t border-border bg-muted/20">
+        <CardHeader className="pb-4 pt-4">
+          <div className="flex items-center gap-2">
+            <Skeleton className="w-8 h-8 rounded-lg" />
+            <Skeleton className="h-5 w-32" />
+          </div>
+        </CardHeader>
+        <CardContent className="pt-0">
+          <div className="grid grid-cols-2 gap-4">
+            {Array.from({ length: 4 }).map((_, index) => (
+              <div key={index} className="p-4 rounded-lg border border-border">
+                <div className="flex items-center justify-between mb-3">
+                  <Skeleton className="w-8 h-8 rounded-lg" />
+                  <Skeleton className="h-4 w-12 rounded-full" />
+                </div>
+                <Skeleton className="h-8 w-16 mb-2" />
+                <div className="flex items-center justify-between">
+                  <Skeleton className="h-3 w-20" />
+                  <Skeleton className="h-1 w-12 rounded-full" />
+                </div>
               </div>
-              <Skeleton className="h-8 w-16 mb-2" />
-              <div className="flex items-center justify-between">
-                <Skeleton className="h-3 w-12" />
-                <Skeleton className="h-1 w-12 rounded-full" />
-              </div>
-            </div>
-          ))}
-        </div>
-      </CardContent>
+            ))}
+          </div>
+        </CardContent>
+      </div>
     </Card>
   );
 };

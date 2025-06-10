@@ -8,13 +8,6 @@
       "colorScheme": "blue"
     },
     {
-      "title": "Followers",
-      "value": "+15",
-      "change": "+8%",
-      "icon": "Users",
-      "colorScheme": "purple"
-    },
-    {
       "title": "Profile Views",
       "value": "350",
       "change": "+5%",
@@ -27,6 +20,13 @@
       "change": "+15%",
       "icon": "Search",
       "colorScheme": "orange"
+    },
+    {
+      "title": "Engagement Rate",
+      "value": "8.5%",
+      "change": "+3%",
+      "icon": "Heart",
+      "colorScheme": "purple"
     }
   ]
 }

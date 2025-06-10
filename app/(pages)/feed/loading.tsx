@@ -1,8 +1,7 @@
-import { 
-  PostCardSkeleton, 
-  TrendingCardSkeleton, 
-  ProfileCardSkeleton, 
-  AnalyticsCardSkeleton 
+import {
+  PostCardSkeleton,
+  TrendingCardSkeleton,
+  ProfileCardSkeleton,
 } from "@/components/ui/loaders";
 
 export default function FeedLoading() {
@@ -20,7 +19,6 @@ export default function FeedLoading() {
         <div className="lg:col-span-4 space-y-6">
           <ProfileCardSkeleton />
           <TrendingCardSkeleton />
-          <AnalyticsCardSkeleton />
         </div>
       </div>
     </div>

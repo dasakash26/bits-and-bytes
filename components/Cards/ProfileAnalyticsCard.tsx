@@ -33,23 +33,13 @@ const colorMap = {
   Heart: "from-purple-500 to-pink-500",
 };
 
-// Dummy user data
-const dummyUserData = {
-  bio: "Code wizard by day, debugging detective by night 🕵️‍♂️ Turning caffeine into features since 2021. Currently breaking things in production and calling it 'iterative development' ☕️💻",
-  role: "Full-Stack Sorcerer",
-  guestBio:
-    "Ready to join our community of digital dreamers and code conjurers? Sign in and let's build something magical together! ✨🚀",
-};
-
 export const ProfileCard = () => {
   const router = useRouter();
   const { data: session, status } = useSession();
 
   const handleCardClick = () => {
     if (session) {
-      // Create a slug from the user's name or use email
-      const userSlug = userName.toLowerCase().replace(/\s+/g, "") || "user";
-      router.push(`/profile/${userSlug}`);
+      router.push("/profile/dasakash26");
     }
   };
 
@@ -73,27 +63,25 @@ export const ProfileCard = () => {
       .slice(0, 2);
   };
 
-  // Use session data or fallback values
+  // Use session data or fallback to default values
   const userName = session?.user?.name || "Guest User";
   const userEmail = session?.user?.email || "";
   const userImage = session?.user?.image || "";
   const userInitials = getInitials(userName);
-  const userBio = session ? dummyUserData.bio : dummyUserData.guestBio;
-  const userRole = session ? dummyUserData.role : "Future Innovator";
 
   // Show loading state
   if (status === "loading") {
     return (
-      <Card className="bg-card border-border shadow-lg overflow-hidden">
-        <div className="h-24 bg-gradient-to-r from-primary/20 via-primary/10 to-accent/20 border-b border-border relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent animate-pulse" />
+      <Card className="bg-card border-border shadow-sm overflow-hidden p-0">
+        <div className="h-20 bg-gradient-to-r from-primary/20 via-primary/10 to-accent/20 border-b border-border relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent" />
         </div>
-        <CardContent className="relative pt-0 pb-8 px-6">
-          <div className="flex flex-col items-center -mt-12">
-            <div className="w-24 h-24 border-4 border-background shadow-xl rounded-full bg-muted animate-pulse" />
-            <div className="text-center mt-6 space-y-3 w-full">
-              <div className="h-7 w-40 bg-muted rounded-lg animate-pulse mx-auto" />
-              <div className="h-5 w-32 bg-muted rounded-full animate-pulse mx-auto" />
+        <CardContent className="relative pt-0 pb-6">
+          <div className="flex flex-col items-center -mt-10">
+            <div className="w-20 h-20 border-4 border-background shadow-lg rounded-full bg-muted animate-pulse" />
+            <div className="text-center mt-4 space-y-2">
+              <div className="h-6 w-32 bg-muted rounded animate-pulse mx-auto" />
+              <div className="h-5 w-24 bg-muted rounded-full animate-pulse mx-auto" />
             </div>
           </div>
         </CardContent>
@@ -103,67 +91,60 @@ export const ProfileCard = () => {
 
   return (
     <Card
-      className={`bg-card border-border shadow-lg hover:shadow-xl transition-all duration-300 group hover:border-primary/40 overflow-hidden ${
+      className={`bg-card border-border shadow-sm hover:shadow-xl transition-all duration-300 group hover:border-primary/30 overflow-hidden p-0 ${
         session ? "cursor-pointer" : ""
       }`}
     >
-      {/* Header */}
-      <div className="h-24 bg-gradient-to-r from-primary/20 via-primary/10 to-accent/20 border-b border-border relative overflow-hidden">
+      {/* Header with Profile */}
+      <div className="h-20 bg-gradient-to-r from-primary/20 via-primary/10 to-accent/20 border-b border-border relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent" />
       </div>
 
       <CardContent
-        className="relative pt-0 pb-8 px-6"
+        className="relative pt-0 pb-6"
         onClick={session ? handleCardClick : undefined}
       >
-        <div className="flex flex-col items-center -mt-12">
-          {/* Avatar */}
+        <div className="flex flex-col items-center -mt-10">
           <div className="relative">
-            <Avatar className="w-24 h-24 border-4 border-background shadow-xl group-hover:scale-105 transition-transform duration-300">
-              <AvatarImage
-                src={userImage}
-                alt={userName}
-                className="object-cover"
-              />
-              <AvatarFallback className="text-xl font-bold bg-gradient-to-br from-primary to-primary/70 text-white">
+            <Avatar className="w-20 h-20 border-4 border-background shadow-lg group-hover:scale-110 transition-transform duration-300">
+              <AvatarImage src={userImage} alt={userName} />
+              <AvatarFallback className="text-lg bg-gradient-to-br from-primary to-primary/70 text-white">
                 {userInitials}
               </AvatarFallback>
             </Avatar>
             {session && (
-              <div className="absolute -bottom-1 -right-1 w-7 h-7 bg-yellow-400 rounded-full border-3 border-background flex items-center justify-center shadow-lg">
-                <Star className="w-3.5 h-3.5 text-yellow-800 fill-current" />
+              <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-yellow-400 rounded-full border-2 border-background flex items-center justify-center">
+                <Star className="w-3 h-3 text-yellow-800 fill-current" />
               </div>
             )}
           </div>
 
-          {/* User Info */}
-          <div className="text-center mt-6 space-y-4 w-full">
-            <div className="space-y-2">
-              <h2 className="text-2xl font-bold group-hover:text-primary transition-colors duration-300">
-                {userName}
-              </h2>
-
-              <div className="inline-flex items-center bg-primary/10 border border-primary/20 text-primary px-4 py-2 rounded-full text-sm font-medium">
-                {userRole}
-              </div>
-            </div>
-
-            {/* Email for signed-in users */}
+          <div className="text-center mt-4 space-y-2">
+            <h2 className="text-xl font-semibold group-hover:text-primary transition-colors duration-200">
+              {userName}
+            </h2>
+            <p className="text-primary font-medium bg-primary/10 px-3 py-1 rounded-full text-sm">
+              {session ? "Content Creator" : "Welcome!"}
+            </p>
             {session && userEmail && (
-              <p className="text-muted-foreground text-sm bg-muted/20 px-3 py-2 rounded-lg border border-border/50">
+              <p className="text-muted-foreground text-sm px-4 leading-relaxed max-w-xs">
                 {userEmail}
+              </p>
+            )}
+            {!session && (
+              <p className="text-muted-foreground text-sm px-4 leading-relaxed max-w-xs">
+                Sign in to access your profile and analytics
               </p>
             )}
           </div>
 
-          {/* Location & Date Info */}
           {session && (
-            <div className="flex items-center gap-8 mt-6 text-sm">
-              <div className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors cursor-pointer">
+            <div className="flex items-center gap-6 mt-4 text-sm text-muted-foreground">
+              <div className="flex items-center gap-2 hover:text-primary transition-colors cursor-pointer">
                 <MapPin className="w-4 h-4" />
                 <span>India</span>
               </div>
-              <div className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors cursor-pointer">
+              <div className="flex items-center gap-2 hover:text-primary transition-colors cursor-pointer">
                 <Calendar className="w-4 h-4" />
                 <span>Joined 2024</span>
               </div>
@@ -171,13 +152,13 @@ export const ProfileCard = () => {
           )}
 
           {/* Action Button */}
-          <div className="mt-6 w-full">
+          <div className="mt-4 w-full px-4">
             {session ? (
               <Button
                 onClick={handleSignOut}
                 variant="outline"
                 size="sm"
-                className="w-full flex items-center gap-2 hover:bg-destructive/10 hover:text-destructive hover:border-destructive/50 transition-all duration-300"
+                className="w-full flex items-center gap-2 hover:bg-destructive/10 hover:text-destructive hover:border-destructive/50 transition-colors"
               >
                 <LogOut className="w-4 h-4" />
                 Sign Out
@@ -185,8 +166,7 @@ export const ProfileCard = () => {
             ) : (
               <Button
                 onClick={handleSignIn}
-                size="sm"
-                className="w-full flex items-center gap-2 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 transition-all duration-300"
+                className="w-full flex items-center gap-2 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 transition-all"
               >
                 <LogIn className="w-4 h-4" />
                 Sign In with Google
@@ -199,16 +179,17 @@ export const ProfileCard = () => {
       {/* Analytics Section - Only show when signed in */}
       {session && (
         <div className="border-t border-border bg-muted/20">
-          <CardHeader className="pb-4 pt-6">
-            <CardTitle className="text-lg font-semibold flex items-center gap-3">
-              <div className="p-2 rounded-xl bg-gradient-to-br from-primary to-primary/70 shadow-lg">
+          <CardHeader className="pb-4 pt-4 relative">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-primary/5 to-transparent rounded-full -translate-y-16 translate-x-16" />
+            <CardTitle className="text-lg font-semibold flex items-center gap-2 relative z-10">
+              <div className="p-1.5 rounded-lg bg-gradient-to-br from-primary to-primary/70 shadow-sm">
                 <BarChart3 className="w-4 h-4 text-white" />
               </div>
               Analytics Overview
             </CardTitle>
           </CardHeader>
 
-          <CardContent className="pt-0 pb-6">
+          <CardContent className="pt-0">
             <div className="grid grid-cols-2 gap-4">
               {analyticsData.overview.map((item, index) => {
                 const Icon = iconMap[item.icon as keyof typeof iconMap];
@@ -216,7 +197,7 @@ export const ProfileCard = () => {
                 return (
                   <div
                     key={index}
-                    className="p-4 rounded-xl border border-border hover:border-primary/50 hover:bg-muted/30 transition-all duration-300 group/metric hover:scale-105"
+                    className="p-4 rounded-lg border border-border hover:border-primary/50 hover:bg-muted/50 transition-all duration-200 group/metric hover:scale-105 hover:shadow-md"
                   >
                     <div className="flex items-center justify-between mb-3">
                       <div

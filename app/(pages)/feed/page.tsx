@@ -1,6 +1,5 @@
 import React from "react";
 import { ProfileCard } from "@/components/Cards/ProfileCard";
-import { AnalyticsCard } from "@/components/Cards/AnalyticsCard";
 import { NewPostInput } from "@/components/post/NewPostInput";
 import { FeedPost } from "@/components/FeedPost";
 import { TrendingCard } from "@/components/Cards/TrendingCard";
@@ -14,7 +13,6 @@ export default function FeedPage() {
           {/* Left Sidebar */}
           <div className="lg:col-span-3 space-y-6">
             <ProfileCard />
-            <AnalyticsCard />
           </div>
 
           {/* Main Feed */}

@@ -1,6 +1,7 @@
 "use client";
 import { BackgroundLines } from "@/components/ui/background-lines";
 import { ModeToggle } from "@/components/ui/theme-toggler";
+import LoginButton from "@/components/LoginButton";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -28,7 +29,7 @@ import {
   Target,
 } from "lucide-react";
 import Link from "next/link";
-import posts  from "@/data/posts"; 
+import posts from "@/data/posts";
 export default function Home() {
   return (
     <div className="min-h-screen">
@@ -73,9 +74,7 @@ export default function Home() {
           </div>
           <div className="flex items-center space-x-2">
             <ModeToggle />
-            <Button variant="outline" size="lg">
-              Sign In
-            </Button>
+            <LoginButton />
           </div>
         </div>
       </nav>

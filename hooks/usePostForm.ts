@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export const usePostForm = () => {
   const [postContent, setPostContent] = useState("");
@@ -10,7 +10,7 @@ export const usePostForm = () => {
 
   const addTag = (tag: string) => {
     if (tag && !tags.includes(tag)) {
-      setTags(prev => [...prev, tag]);
+      setTags((prev) => [...prev, tag]);
     }
   };
 
