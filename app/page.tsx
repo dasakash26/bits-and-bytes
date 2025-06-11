@@ -1,7 +1,6 @@
 "use client";
 import { BackgroundLines } from "@/components/ui/background-lines";
 import { ModeToggle } from "@/components/ui/theme-toggler";
-import LoginButton from "@/components/LoginButton";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -30,6 +29,8 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import posts from "@/data/posts";
+import LoginButton from "@/components/LoginButton";
+
 export default function Home() {
   return (
     <div className="min-h-screen">
@@ -98,16 +99,12 @@ export default function Home() {
               fellow developers to contribute their knowledge too.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button
-                size="lg"
-                className="text-lg px-8"
-                onClick={() => {
-                  window.location.href = "/feed";
-                }}
-              >
-                Explore My Articles
-                <ArrowRight className="ml-2 w-4 h-4" />
-              </Button>
+              <Link href="/feed">
+                <Button size="lg" className="text-lg px-8">
+                  Explore My Articles
+                  <ArrowRight className="ml-2 w-4 h-4" />
+                </Button>
+              </Link>
               <Button variant="outline" size="lg" className="text-lg px-8">
                 <BookOpen className="mr-2 w-4 h-4" />
                 Guest Post
@@ -247,14 +244,29 @@ export default function Home() {
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-2">
                         <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
-                          {post.author?.charAt(0) || "A"}
+                          {post.author && typeof post.author === "string"
+                          //@ts-ignore
+                            ? post.author.charAt(0)
+                            : post.author &&
+                              typeof post.author === "object" &&
+                              post.author.name
+                            ? post.author.name.charAt(0)
+                            : "A"}
                         </div>
                         <div>
                           <div className="font-medium text-sm">
-                            {post.author || "Anonymous"}
+                            {post.author && typeof post.author === "string"
+                              ? post.author
+                              : post.author &&
+                                typeof post.author === "object" &&
+                                post.author.name
+                              ? post.author.name
+                              : "Anonymous"}
                           </div>
                           <div className="text-xs text-muted-foreground">
-                            {post.date || "Today"}
+                            {post.date
+                              ? new Date(post.date).toLocaleDateString()
+                              : "Today"}
                           </div>
                         </div>
                       </div>

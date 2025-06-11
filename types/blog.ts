@@ -1,12 +1,16 @@
+import { User } from "./user";
+
 export interface BlogPost {
-  id: number;
+  id: string; // Changed from number to string to match Prisma
   title: string;
   slug: string;
   excerpt: string;
-  author: string;
-  date: string;
+  authorId: string; // Added authorId field
+  author: Author; // This will be populated via relation
+  date: Date; // Changed from string to Date to match Prisma
   readTime: string;
-  category: string;
+  categoryId: string; // Added categoryId field
+  category: Category; // This will be populated via relation
   tags: string[];
   image: string; // This is the featured image URL
   content: string;
@@ -27,11 +31,11 @@ export interface Author {
   name: string;
   avatar?: string;
   bio?: string;
-  social?: {
-    twitter?: string;
-    github?: string;
-    linkedin?: string;
-  };
+  twitter?: string; // Flattened from social object
+  github?: string;
+  linkedin?: string;
+  userId?: string; // Added to match Prisma relation
+  user?: User; // Optional user relation
 }
 
 export type BlogPosts = BlogPost[];

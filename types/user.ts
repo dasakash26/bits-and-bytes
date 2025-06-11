@@ -1,9 +1,14 @@
 export interface User {
   id: string;
-  name: string;
+  name?: string;
   email: string;
-  username: string;
-  avatar: string;
+  emailVerified?: Date;
+  image?: string;
+  createdAt: Date;
+  updatedAt: Date;
+
+  // Extended fields for frontend
+  username?: string;
   bio?: string;
   title?: string;
   location?: string;

@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { BlogPost } from "../types/blog";
 import { PostModal } from "./PostModal";
 import { PostCard } from "./Cards/PostCard";
+import EmailSignIn from "./EmailSignIn";
 
 interface FeedPostProps {
   post: BlogPost;
@@ -29,6 +30,7 @@ export const FeedPost = ({ post }: FeedPostProps) => {
       onBookmarkToggle={handleBookmarkToggle}
     >
       <div>
+        <div className="mb-4"/>
         <PostCard
           post={post}
           onPostClick={() => {}}

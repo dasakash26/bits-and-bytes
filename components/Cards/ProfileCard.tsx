@@ -18,6 +18,7 @@ import {
 import { useRouter } from "next/navigation";
 import { useSession, signOut, signIn } from "next-auth/react";
 import analyticsData from "@/data/analytics.json";
+import EmailSignIn from "../EmailSignIn";
 
 const iconMap = {
   TrendingUp,
@@ -44,6 +45,22 @@ const dummyUserData = {
 export const ProfileCard = () => {
   const router = useRouter();
   const { data: session, status } = useSession();
+
+  // Generate display name from email if name is not available
+  const getDisplayName = (user: any) => {
+    if (user?.name) return user.name;
+    if (user?.email) {
+      // Extract name from email (before @)
+      const emailName = user.email.split("@")[0];
+      // Capitalize first letter and replace dots/underscores with spaces
+      return emailName
+        .replace(/[._]/g, " ")
+        .split(" ")
+        .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ");
+    }
+    return "Guest User";
+  };
 
   const handleCardClick = () => {
     if (session) {
@@ -74,7 +91,7 @@ export const ProfileCard = () => {
   };
 
   // Use session data or fallback values
-  const userName = session?.user?.name || "Guest User";
+  const userName = getDisplayName(session?.user) || "Guest User";
   const userEmail = session?.user?.email || "";
   const userImage = session?.user?.image || "";
   const userInitials = getInitials(userName);
