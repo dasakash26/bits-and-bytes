@@ -1,18 +1,16 @@
-import { User } from "./user";
-
 export interface BlogPost {
-  id: string; // Changed from number to string to match Prisma
+  id: string;
   title: string;
   slug: string;
-  excerpt: string;
-  authorId: string; // Added authorId field
-  author: Author; // This will be populated via relation
-  date: Date; // Changed from string to Date to match Prisma
-  readTime: string;
-  categoryId: string; // Added categoryId field
-  category: Category; // This will be populated via relation
+  excerpt: string| null; // Optional excerpt for SEO and previews
+  authorId: string; 
+  author: Author; 
+  date: Date; 
+  readTime: string|null;
+  categoryId: string; 
+  category: Category; 
   tags: string[];
-  image: string; // This is the featured image URL
+  image: string| null; 
   content: string;
   likeCount: number;
   commentCount: number;
@@ -22,20 +20,19 @@ export interface BlogPost {
 export interface Category {
   id: string;
   name: string;
-  description?: string;
-  icon?: string;
+  description?: string| null;
+  icon?: string| null;
 }
 
 export interface Author {
   id: string;
   name: string;
-  avatar?: string;
-  bio?: string;
-  twitter?: string; // Flattened from social object
-  github?: string;
-  linkedin?: string;
-  userId?: string; // Added to match Prisma relation
-  user?: User; // Optional user relation
+  avatar?: string|null;
+  bio?: string|null;
+  twitter?: string|null;
+  github?: string|null;
+  linkedin?: string|null;
+  userId?: string|null; 
 }
 
 export type BlogPosts = BlogPost[];

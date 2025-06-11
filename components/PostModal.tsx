@@ -13,8 +13,6 @@ import { Badge } from "@/components/ui/badge";
 import {
   X,
   Bookmark,
-  Maximize,
-  Minimize,
   ExternalLink,
   Share2,
   Plus,
@@ -53,7 +51,7 @@ export const PostModal = ({
   };
 
   const handleOpenInNewPage = () => {
-    router.push(`/article/${post.id}`);
+    router.push(`/blog/${post.id}`);
   };
 
   if (!post) return null;
@@ -114,7 +112,13 @@ export const PostModal = ({
           </DialogTitle>
           <DialogDescription className="mt-0 flex items-center gap-1 text-xs">
             <div className="w-0.5 h-0.5 bg-primary rounded-full" />
-            Published {post.date} • {post.readTime}
+            Published{" "}
+            {new Date(post.date).toLocaleDateString("en-US", {
+              month: "long",
+              day: "numeric",
+              year: "numeric",
+            })}{" "}
+            • {post.readTime}
           </DialogDescription>
         </DialogHeader>
 

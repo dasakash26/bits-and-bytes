@@ -27,7 +27,7 @@ import { User } from "@/types/user";
 
 // Default user data structure
 const defaultUserData: User = {
-  id: "777",
+  id: "",
   name: "Unknown User",
   email: "",
   username: "",

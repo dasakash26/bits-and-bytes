@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { BlogPost } from "../types/blog";
 import { PostModal } from "./PostModal";
 import { PostCard } from "./Cards/PostCard";
-import EmailSignIn from "./EmailSignIn";
 
 interface FeedPostProps {
   post: BlogPost;

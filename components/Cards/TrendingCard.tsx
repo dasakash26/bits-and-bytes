@@ -1,17 +1,20 @@
-"use client";
-import React from "react";
-import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { TrendingUp, Flame, ChevronRight } from "lucide-react";
-import blogPosts from "@/data/posts";
+import { Flame, ChevronRight } from "lucide-react";
+import { prisma } from "@/lib/prisma";
+import Link from "next/link";
 
-export const TrendingCard = () => {
-  const router = useRouter();
-
-  const handlePostClick = (id: number) => {
-    router.push(`/article/${id}`);
-  };
+export const TrendingCard = async () => {
+  const trendingPosts = await prisma.blogPost.findMany({
+    take: 5,
+    include: {
+      author: {
+        include: {
+          user: true,
+        },
+      },
+    },
+  });
 
   return (
     <Card className="bg-card border-border shadow-sm hover:shadow-lg transition-all duration-300 hover:border-primary/30 group">
@@ -25,11 +28,11 @@ export const TrendingCard = () => {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
-        {blogPosts.slice(0, 5).map((post, index) => (
-          <div
+        {trendingPosts.map((post, index) => (
+          <Link
+            href={`/blog/${post.id}`}
             key={post.id}
-            onClick={() => handlePostClick(post.id)}
-            className="p-3 rounded-lg border border-border hover:border-primary/50 hover:bg-muted/50 transition-all duration-200 cursor-pointer group/item hover:scale-[1.02] hover:shadow-sm"
+            className="block p-3 rounded-lg border border-border hover:border-primary/50 hover:bg-muted/50 transition-all duration-200 cursor-pointer group/item hover:scale-[1.02] hover:shadow-sm"
           >
             <div className="flex items-start gap-3">
               <div className="flex-shrink-0 relative">
@@ -52,7 +55,7 @@ export const TrendingCard = () => {
                   <p className="text-xs text-muted-foreground">
                     by{" "}
                     <span className="font-medium text-foreground/80">
-                      {post.author}
+                      {post.author.user?.name || "Anonymous"}
                     </span>
                   </p>
 
@@ -68,7 +71,7 @@ export const TrendingCard = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </Link>
         ))}
       </CardContent>
     </Card>

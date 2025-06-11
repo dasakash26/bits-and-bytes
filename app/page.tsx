@@ -1,367 +1,31 @@
-"use client";
 import { BackgroundLines } from "@/components/ui/background-lines";
-import { ModeToggle } from "@/components/ui/theme-toggler";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import {
-  ArrowRight,
   BookOpen,
   Code,
-  Coffee,
   Github,
   Linkedin,
   Twitter,
   Users,
   TrendingUp,
-  Award,
-  Globe,
   Mail,
-  Clock,
-  Target,
 } from "lucide-react";
-import Link from "next/link";
-import posts from "@/data/posts";
-import LoginButton from "@/components/LoginButton";
+import { Navigation } from "@/components/sections/Navigation";
+import { HeroSection } from "@/components/sections/HeroSection";
+import { StatsSection } from "@/components/sections/StatsSection";
+import { ArticlesSection } from "@/components/sections/ArticlesSection";
+import { NewsletterSection } from "@/components/sections/NewsletterSection";
 
 export default function Home() {
   return (
     <div className="min-h-screen">
-      {/* Navigation */}
-      <nav className="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-sm border-b">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <Code className="w-8 h-8 text-primary" />
-            <span className="text-xl font-bold">Bits & Bytes</span>
-          </div>
-          <div className="hidden md:flex items-center space-x-6">
-            <a
-              href="#articles"
-              className="text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Articles
-            </a>
-            <a
-              href="#newsletter"
-              className="text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Newsletter
-            </a>
-            <a
-              href="#stats"
-              className="text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Stats
-            </a>
-            <a
-              href="#footer"
-              className="text-muted-foreground hover:text-foreground transition-colors"
-            >
-              About
-            </a>
-            <Link
-              href="/feed"
-              className="text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Feed
-            </Link>
-          </div>
-          <div className="flex items-center space-x-2">
-            <ModeToggle />
-            <LoginButton />
-          </div>
-        </div>
-      </nav>
+      <Navigation />
 
       <BackgroundLines className="pt-20">
-        {/* Hero Section */}
-        <section className="container mx-auto px-4 py-20 text-center">
-          <div className="max-w-4xl mx-auto">
-            <Badge variant="secondary" className="mb-6">
-              <Coffee className="w-3 h-3 mr-1" />
-              Welcome to Akash's Tech Universe
-            </Badge>
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
-              My Personal
-              <br />
-              Tech Blog
-            </h1>
-            <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed">
-              Join me on my journey through code, technology, and innovation.
-              This is my personal space where I share insights, and invite
-              fellow developers to contribute their knowledge too.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/feed">
-                <Button size="lg" className="text-lg px-8">
-                  Explore My Articles
-                  <ArrowRight className="ml-2 w-4 h-4" />
-                </Button>
-              </Link>
-              <Button variant="outline" size="lg" className="text-lg px-8">
-                <BookOpen className="mr-2 w-4 h-4" />
-                Guest Post
-              </Button>
-            </div>
-          </div>
-        </section>
-
-        {/* Stats Section */}
-        <section id="stats" className="container mx-auto px-4 py-20">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Blog Statistics
-            </h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Growing community of developers who enjoy reading my thoughts and
-              contributing their own insights
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
-            <div className="text-center p-6 rounded-lg bg-muted/30">
-              <TrendingUp className="w-12 h-12 text-primary mx-auto mb-4" />
-              <div className="text-4xl font-bold mb-2">25K+</div>
-              <div className="text-muted-foreground">Monthly Readers</div>
-              <p className="text-sm text-muted-foreground mt-2">
-                And growing every month
-              </p>
-            </div>
-            <div className="text-center p-6 rounded-lg bg-muted/30">
-              <Users className="w-12 h-12 text-primary mx-auto mb-4" />
-              <div className="text-4xl font-bold mb-2">15+</div>
-              <div className="text-muted-foreground">Guest Contributors</div>
-              <p className="text-sm text-muted-foreground mt-2">
-                Talented developers sharing knowledge
-              </p>
-            </div>
-            <div className="text-center p-6 rounded-lg bg-muted/30">
-              <BookOpen className="w-12 h-12 text-primary mx-auto mb-4" />
-              <div className="text-4xl font-bold mb-2">50+</div>
-              <div className="text-muted-foreground">Published Articles</div>
-              <p className="text-sm text-muted-foreground mt-2">
-                Deep dives into various tech topics
-              </p>
-            </div>
-            <div className="text-center p-6 rounded-lg bg-muted/30">
-              <Globe className="w-12 h-12 text-primary mx-auto mb-4" />
-              <div className="text-4xl font-bold mb-2">30+</div>
-              <div className="text-muted-foreground">Countries Reached</div>
-              <p className="text-sm text-muted-foreground mt-2">
-                Global developer readership
-              </p>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-            <div className="text-center">
-              <Award className="w-8 h-8 text-primary mx-auto mb-3" />
-              <h3 className="font-semibold mb-2">Personal Touch</h3>
-              <p className="text-sm text-muted-foreground">
-                Real experiences from my coding journey
-              </p>
-            </div>
-            <div className="text-center">
-              <Clock className="w-8 h-8 text-primary mx-auto mb-3" />
-              <h3 className="font-semibold mb-2">Regular Updates</h3>
-              <p className="text-sm text-muted-foreground">
-                New posts every week
-              </p>
-            </div>
-            <div className="text-center">
-              <Target className="w-8 h-8 text-primary mx-auto mb-3" />
-              <h3 className="font-semibold mb-2">Open Contributions</h3>
-              <p className="text-sm text-muted-foreground">
-                Guest posts welcome from fellow developers
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* Featured Articles Section */}
-        <section
-          id="articles"
-          className="container mx-auto px-4 py-20 bg-muted/20"
-        >
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Latest Articles
-            </h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              My recent thoughts on technology, coding practices, and industry
-              trends. Some articles also feature contributions from amazing
-              guest writers.
-            </p>
-          </div>
-
-          {/* Article Tags */}
-          <div className="flex flex-wrap justify-center gap-4 mb-12">
-            {[
-              "All",
-              "My Posts",
-              "Guest Posts",
-              "Tutorials",
-              "Opinions",
-              "Reviews",
-            ].map((tag) => (
-              <Badge
-                key={tag}
-                variant={tag === "All" ? "default" : "outline"}
-                className="cursor-pointer"
-              >
-                {tag}
-              </Badge>
-            ))}
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-            {posts.slice(0, 6).map((post, index) => (
-              <Link key={index} href={`/article/${post.id || index + 1}`}>
-                <Card className="hover:shadow-lg transition-all duration-300 cursor-pointer group">
-                  <CardHeader>
-                    <div className="flex items-center space-x-2 mb-2">
-                      <Badge variant="outline">{post.tags?.[0]}</Badge>
-                      <span className="text-sm text-muted-foreground">
-                        5 min read
-                      </span>
-                    </div>
-                    <CardTitle className="group-hover:text-primary transition-colors line-clamp-2">
-                      {post.title}
-                    </CardTitle>
-                    <CardDescription className="line-clamp-3">
-                      {post.excerpt ||
-                        "Discover the latest insights and best practices in modern software development with real-world examples and actionable tips."}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-2">
-                        <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
-                          {post.author && typeof post.author === "string"
-                          //@ts-ignore
-                            ? post.author.charAt(0)
-                            : post.author &&
-                              typeof post.author === "object" &&
-                              post.author.name
-                            ? post.author.name.charAt(0)
-                            : "A"}
-                        </div>
-                        <div>
-                          <div className="font-medium text-sm">
-                            {post.author && typeof post.author === "string"
-                              ? post.author
-                              : post.author &&
-                                typeof post.author === "object" &&
-                                post.author.name
-                              ? post.author.name
-                              : "Anonymous"}
-                          </div>
-                          <div className="text-xs text-muted-foreground">
-                            {post.date
-                              ? new Date(post.date).toLocaleDateString()
-                              : "Today"}
-                          </div>
-                        </div>
-                      </div>
-                      <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
-                    </div>
-                  </CardContent>
-                </Card>
-              </Link>
-            ))}
-          </div>
-
-          <div className="text-center">
-            <Link href="/articles">
-              <Button size="lg" variant="outline">
-                View All Articles
-                <ArrowRight className="ml-2 w-4 h-4" />
-              </Button>
-            </Link>
-          </div>
-        </section>
-
-        {/* Newsletter Section */}
-        <section id="newsletter" className="container mx-auto px-4 py-20">
-          <div className="max-w-4xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <div>
-                <Badge variant="secondary" className="mb-4">
-                  <Mail className="w-3 h-3 mr-1" />
-                  Personal Newsletter
-                </Badge>
-                <h2 className="text-3xl md:text-4xl font-bold mb-6">
-                  Stay Connected
-                </h2>
-                <p className="text-xl text-muted-foreground mb-8">
-                  Get notified when I publish new articles or when guest
-                  contributors share their insights. Join my personal mailing
-                  list for exclusive content.
-                </p>
-
-                <div className="space-y-4 mb-8">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-2 h-2 bg-primary rounded-full"></div>
-                    <span className="text-muted-foreground">
-                      New article notifications
-                    </span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-2 h-2 bg-primary rounded-full"></div>
-                    <span className="text-muted-foreground">
-                      Behind-the-scenes content
-                    </span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-2 h-2 bg-primary rounded-full"></div>
-                    <span className="text-muted-foreground">
-                      Guest contributor announcements
-                    </span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-2 h-2 bg-primary rounded-full"></div>
-                    <span className="text-muted-foreground">
-                      Personal tech updates and recommendations
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-muted/30 p-8 rounded-lg">
-                <h3 className="text-xl font-semibold mb-6">
-                  Join My Newsletter
-                </h3>
-                <div className="space-y-4">
-                  <Input
-                    placeholder="Enter your email address"
-                    type="email"
-                    className="w-full"
-                  />
-                  <Input
-                    placeholder="Your name (optional)"
-                    type="text"
-                    className="w-full"
-                  />
-                  <Button className="w-full" size="lg">
-                    Subscribe to Updates
-                    <Mail className="ml-2 w-4 h-4" />
-                  </Button>
-                </div>
-                <p className="text-sm text-muted-foreground mt-4 text-center">
-                  Join 2,500+ readers. Unsubscribe anytime. No spam, just good
-                  content.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
+        <HeroSection />
+        <StatsSection />
+        <ArticlesSection />
+        <NewsletterSection />
 
         {/* About Section */}
         <section
@@ -371,30 +35,29 @@ export default function Home() {
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                About This Blog
+                About Bits & Bytes
               </h2>
               <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-                Hi, I'm Akash! This is my personal corner of the internet where
-                I share my thoughts on technology, coding experiences, and
-                invite other talented developers to contribute their knowledge.
+                The premier destination for developers who want to stay ahead of
+                the curve. We're not just another tech blog - we're your gateway
+                to the future of development.
               </p>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-16">
               <div>
-                <h3 className="text-2xl font-bold mb-6">Why I Blog</h3>
+                <h3 className="text-2xl font-bold mb-6">Our Vision</h3>
                 <p className="text-muted-foreground mb-6 leading-relaxed">
-                  I believe in sharing knowledge and learning from others. This
-                  blog started as a way to document my coding journey, but it
-                  has evolved into a platform where I can share insights and
-                  invite other developers to contribute their unique
-                  perspectives.
+                  To democratize access to cutting-edge technical knowledge and
+                  create the world's most comprehensive developer resource. We
+                  believe that when developers share knowledge freely,
+                  innovation accelerates exponentially.
                 </p>
                 <p className="text-muted-foreground leading-relaxed">
-                  Whether you're looking to read about the latest tech trends,
-                  learn from practical tutorials, or share your own knowledge as
-                  a guest contributor, this space is designed to foster learning
-                  and community.
+                  From junior developers taking their first steps to seasoned
+                  architects shaping the future, our platform serves every level
+                  with content that matters, tutorials that work, and insights
+                  that inspire.
                 </p>
               </div>
 
@@ -406,10 +69,10 @@ export default function Home() {
                   <div className="flex items-start space-x-3">
                     <BookOpen className="w-5 h-5 text-primary mt-1" />
                     <div>
-                      <h4 className="font-semibold">Personal Insights</h4>
+                      <h4 className="font-semibold">Community Insights</h4>
                       <p className="text-sm text-muted-foreground">
-                        My thoughts on development practices, tools, and
-                        industry trends
+                        Thoughts on development practices, tools, and industry
+                        trends from our contributors
                       </p>
                     </div>
                   </div>
@@ -426,9 +89,10 @@ export default function Home() {
                   <div className="flex items-start space-x-3">
                     <Users className="w-5 h-5 text-primary mt-1" />
                     <div>
-                      <h4 className="font-semibold">Guest Contributions</h4>
+                      <h4 className="font-semibold">Community Contributions</h4>
                       <p className="text-sm text-muted-foreground">
-                        Articles from fellow developers sharing their expertise
+                        Articles from developers sharing their expertise and
+                        experiences
                       </p>
                     </div>
                   </div>
@@ -437,8 +101,8 @@ export default function Home() {
                     <div>
                       <h4 className="font-semibold">Tech Reviews</h4>
                       <p className="text-sm text-muted-foreground">
-                        Honest reviews of tools, frameworks, and technologies I
-                        use
+                        Honest reviews of tools, frameworks, and technologies
+                        from our community
                       </p>
                     </div>
                   </div>
@@ -449,22 +113,33 @@ export default function Home() {
             <div className="text-center">
               <h3 className="text-2xl font-bold mb-8">Want to Contribute?</h3>
               <p className="text-muted-foreground mb-8 max-w-2xl mx-auto">
-                I'm always looking for talented developers to share their
+                We're always looking for talented developers to share their
                 knowledge. If you have an interesting story, tutorial, or
-                insight to share, I'd love to feature it!
+                insight to share, we'd love to feature it!
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button size="lg">
+                <Button
+                  size="lg"
+                  className="bg-gradient-to-r from-green-500 to-teal-500 hover:from-green-600 hover:to-teal-600"
+                >
                   <Mail className="mr-2 w-4 h-4" />
-                  Submit Guest Post
+                  Become a Contributor
                 </Button>
-                <Button variant="outline" size="lg">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="border-blue-200 text-blue-600 hover:bg-blue-50 dark:border-blue-800 dark:text-blue-400 dark:hover:bg-blue-950"
+                >
                   <Twitter className="mr-2 w-4 h-4" />
-                  Connect on Twitter
+                  Follow @BitsAndBytes
                 </Button>
-                <Button variant="outline" size="lg">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="border-purple-200 text-purple-600 hover:bg-purple-50 dark:border-purple-800 dark:text-purple-400 dark:hover:bg-purple-950"
+                >
                   <Github className="mr-2 w-4 h-4" />
-                  Follow on GitHub
+                  Star on GitHub
                 </Button>
               </div>
             </div>

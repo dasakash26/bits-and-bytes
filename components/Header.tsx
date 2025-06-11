@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useTheme } from "next-themes";
+import { useRouter } from "next/navigation";
 import {
   CommandDialog,
   CommandEmpty,
@@ -10,7 +11,7 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { Search, Moon, Sun, Code } from "lucide-react";
+import { Search, Moon, Sun, Code, FileText, Hash, User } from "lucide-react";
 import LoginButton from "./LoginButton";
 
 export function Header({ children }: { children: React.ReactNode }) {
@@ -25,6 +26,14 @@ export function Header({ children }: { children: React.ReactNode }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [searchResults, setSearchResults] = useState<{
+    posts: any[];
+    categories: any[];
+    authors: any[];
+  }>({ posts: [], categories: [], authors: [] });
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -53,6 +62,38 @@ export function Header({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // Search function
+  const performSearch = async (query: string) => {
+    if (!query.trim()) {
+      setSearchResults({ posts: [], categories: [], authors: [] });
+      return;
+    }
+
+    setIsSearching(true);
+    try {
+      const response = await fetch(
+        `/api/search?q=${encodeURIComponent(query)}`
+      );
+      const data = await response.json();
+      setSearchResults(data);
+    } catch (error) {
+      console.error("Search error:", error);
+    } finally {
+      setIsSearching(false);
+    }
+  };
+
+  // Debounced search
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (searchQuery) {
+        performSearch(searchQuery);
+      }
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
 
   return (
     <div className="relative w-full">
@@ -262,34 +303,104 @@ export function Header({ children }: { children: React.ReactNode }) {
 
       {/* Command Dialog for Search */}
       <CommandDialog open={isSearchOpen} onOpenChange={setIsSearchOpen}>
-        <CommandInput placeholder="Search articles, categories..." />
+        <CommandInput
+          placeholder="Search articles, categories, authors..."
+          value={searchQuery}
+          onValueChange={setSearchQuery}
+        />
         <CommandList>
-          <CommandEmpty>No results found.</CommandEmpty>
-          <CommandGroup heading="Navigation">
-            {navItems.map((item) => (
-              <CommandItem
-                key={item.name}
-                onSelect={() => {
-                  setIsSearchOpen(false);
-                  // Navigate to item.link
-                }}
-                className="hover:bg-primary/10 transition-colors duration-200"
-              >
-                {item.name}
-              </CommandItem>
-            ))}
-          </CommandGroup>
-          <CommandGroup heading="Recent Articles">
-            <CommandItem className="hover:bg-primary/10 transition-colors duration-200">
-              Understanding React Server Components
-            </CommandItem>
-            <CommandItem className="hover:bg-primary/10 transition-colors duration-200">
-              The Future of TypeScript
-            </CommandItem>
-            <CommandItem className="hover:bg-primary/10 transition-colors duration-200">
-              Building Scalable APIs with Node.js
-            </CommandItem>
-          </CommandGroup>
+          <CommandEmpty>
+            {isSearching ? "Searching..." : "No results found."}
+          </CommandEmpty>
+
+          {!searchQuery && (
+            <CommandGroup heading="Navigation">
+              {navItems.map((item) => (
+                <CommandItem
+                  key={item.name}
+                  onSelect={() => {
+                    setIsSearchOpen(false);
+                    router.push(item.link);
+                  }}
+                  className="hover:bg-primary/10 transition-colors duration-200"
+                >
+                  <Code className="mr-2 h-4 w-4" />
+                  {item.name}
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          )}
+
+          {searchResults.posts.length > 0 && (
+            <CommandGroup heading="Articles">
+              {searchResults.posts.slice(0, 5).map((post) => (
+                <CommandItem
+                  key={post.id}
+                  onSelect={() => {
+                    setIsSearchOpen(false);
+                    router.push(`/blog/${post.id}`);
+                  }}
+                  className="hover:bg-primary/10 transition-colors duration-200"
+                >
+                  <FileText className="mr-2 h-4 w-4" />
+                  <div className="flex flex-col">
+                    <span className="font-medium">{post.title}</span>
+                    <span className="text-xs text-muted-foreground">
+                      by {post.author?.user?.name || "Anonymous"}
+                    </span>
+                  </div>
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          )}
+
+          {searchResults.categories.length > 0 && (
+            <CommandGroup heading="Categories">
+              {searchResults.categories.slice(0, 3).map((category) => (
+                <CommandItem
+                  key={category.id}
+                  onSelect={() => {
+                    setIsSearchOpen(false);
+                    router.push(`/categories/${category.id}`);
+                  }}
+                  className="hover:bg-primary/10 transition-colors duration-200"
+                >
+                  <Hash className="mr-2 h-4 w-4" />
+                  <div className="flex flex-col">
+                    <span className="font-medium">{category.name}</span>
+                    <span className="text-xs text-muted-foreground">
+                      {category._count?.posts || 0} articles
+                    </span>
+                  </div>
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          )}
+
+          {searchResults.authors.length > 0 && (
+            <CommandGroup heading="Authors">
+              {searchResults.authors.slice(0, 3).map((author) => (
+                <CommandItem
+                  key={author.id}
+                  onSelect={() => {
+                    setIsSearchOpen(false);
+                    router.push(`/authors/${author.id}`);
+                  }}
+                  className="hover:bg-primary/10 transition-colors duration-200"
+                >
+                  <User className="mr-2 h-4 w-4" />
+                  <div className="flex flex-col">
+                    <span className="font-medium">
+                      {author.user?.name || "Anonymous"}
+                    </span>
+                    <span className="text-xs text-muted-foreground">
+                      {author._count?.posts || 0} articles
+                    </span>
+                  </div>
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          )}
         </CommandList>
       </CommandDialog>
 

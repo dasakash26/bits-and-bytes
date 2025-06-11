@@ -98,11 +98,11 @@ model BlogPost {
   id           String   @id @default(cuid())
   title        String
   slug         String   @unique
-  excerpt      String
+  excerpt     String?
   content      String
-  image        String
-  date         DateTime
-  readTime     String
+  image        String?
+  date         DateTime @default(now())
+  readTime     String?
   likeCount    Int      @default(0)
   commentCount Int      @default(0)
   viewCount    Int      @default(0)
@@ -138,8 +138,8 @@ model Author {
   linkedin String?
 
   // Link to User
-  userId String? @unique
-  user   User?   @relation(fields: [userId], references: [id])
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id])
 
   posts BlogPost[]
 }

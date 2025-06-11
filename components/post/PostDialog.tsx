@@ -28,12 +28,12 @@ export const PostDialog = ({
       <DialogContent className="sm:max-w-4xl max-h-[90vh] overflow-hidden flex flex-col">
         <DialogHeader className="pb-4">
           <div className="flex items-center gap-2 mb-2">
-            <Brain className="w-5 h-5 text-primary" />
+            <Brain className="w-4 h-4 text-primary" />
             <span className="text-xs font-medium text-primary uppercase tracking-wide">
               AI Assistant
             </span>
           </div>
-          <DialogTitle className="text-2xl font-bold">
+          <DialogTitle className="text-xl font-bold">
             Write Your Article
           </DialogTitle>
           <DialogDescription className="flex items-center gap-2">

@@ -1,23 +1,38 @@
-import React from "react";
 import { notFound } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import {
+  oneDark,
+  oneLight,
+} from "react-syntax-highlighter/dist/esm/styles/prism";
 import { AuthorInfo } from "@/components/AuthorInfo";
 import { CommentSection } from "@/components/CommentSection";
 import { mockComments } from "@/data/mockComments";
-import posts from "@/data/posts";
 import { ArticleHeader } from "@/components/article/ArticleHeader";
 import { ArticleActions } from "@/components/article/ArticleActions";
+import { prisma } from "@/lib/prisma";
 
 interface ArticlePageProps {
   params: { id: string };
 }
 
 export default async function ArticlePage({ params }: ArticlePageProps) {
-  const postId = parseInt(params.id);
-  const post = posts.find((p) => p.id === postId);
+  const postId = params.id;
+  const post = await prisma.blogPost.findUnique({
+    where: { id: postId },
+    include: {
+      author: {
+        include: {
+          user: true,
+        },
+      },
+      category: true,
+    },
+  });
 
-  if (!post) {
+  if (!post || !post.excerpt) {
     notFound();
   }
 
@@ -35,13 +50,13 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
             <h1 className="text-4xl font-bold leading-tight">{post.title}</h1>
 
             <div className="flex items-center gap-4 text-muted-foreground">
-              <span>Published {post.date}</span>
+              <span>Published {post.date.toLocaleDateString()}</span>
               <span>•</span>
-              <span>{post.readTime}</span>
+              <span>{post.readTime} min read</span>
             </div>
 
             <div className="flex flex-wrap gap-2">
-              {post.tags.map((tag, index) => (
+              {post.tags?.map((tag, index) => (
                 <Badge key={`${tag}-${index}`} variant="secondary">
                   #{tag}
                 </Badge>
@@ -53,7 +68,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           {post.image && (
             <div className="w-full">
               <img
-                src={post.image}
+                src={post?.image}
                 alt={post.title}
                 className="w-full h-96 object-cover rounded-lg border"
                 loading="lazy"
@@ -64,6 +79,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           {/* Article Content */}
           <div className="prose prose-lg max-w-none dark:prose-invert">
             <ReactMarkdown
+              remarkPlugins={[remarkGfm]}
               components={{
                 h1: ({ children }) => (
                   <h1 className="text-3xl font-bold mt-8 mb-4 first:mt-0">
@@ -83,16 +99,48 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                     {children}
                   </p>
                 ),
-                code: ({ children }) => (
-                  <code className="bg-muted px-2 py-1 rounded text-sm font-mono">
-                    {children}
-                  </code>
-                ),
-                pre: ({ children }) => (
-                  <pre className="bg-muted p-4 rounded-lg overflow-x-auto mb-4 border">
-                    {children}
-                  </pre>
-                ),
+                code: ({
+                  node,
+                  inline,
+                  className,
+                  children,
+                  ...props
+                }: any) => {
+                  const match = /language-(\w+)/.exec(className || "");
+                  const language = match ? match[1] : "";
+
+                  // Check if this is a code block (not inline)
+                  if (!inline) {
+                    return (
+                      <div className="my-6">
+                        <SyntaxHighlighter
+                          style={oneDark as any}
+                          language={language || "text"}
+                          PreTag="div"
+                          customStyle={{
+                            margin: 0,
+                            borderRadius: "8px",
+                            fontSize: "14px",
+                            padding: "16px",
+                          }}
+                          showLineNumbers={true}
+                        >
+                          {String(children).replace(/\n$/, "")}
+                        </SyntaxHighlighter>
+                      </div>
+                    );
+                  }
+
+                  return (
+                    <code
+                      className="bg-muted px-2 py-1 rounded text-sm font-mono border"
+                      {...props}
+                    >
+                      {children}
+                    </code>
+                  );
+                },
+                pre: ({ children }) => children,
                 ul: ({ children }) => (
                   <ul className="list-disc pl-6 mb-4 space-y-2">{children}</ul>
                 ),

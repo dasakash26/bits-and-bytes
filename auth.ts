@@ -6,7 +6,7 @@ import Nodemailer from "next-auth/providers/nodemailer";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
-  debug: process.env.NODE_ENV === "development",
+  // debug: process.env.NODE_ENV === "development",
   providers: [
     Nodemailer({
       server: process.env.EMAIL_SERVER,
