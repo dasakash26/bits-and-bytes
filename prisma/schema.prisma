@@ -13,13 +13,43 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
-
+/*
+interface User {
+  id: string;
+  name?: string;
+  email: string;
+  emailVerified?: Date;
+  image?: string;
+  username?: string;
+  bio?: string;
+  title?: string;
+  location?: string;
+  website?: string;
+  twitter?: string;
+  github?: string;
+  linkedin?: string;
+  postsCount: number;
+  badges: string[];
+  createdAt: Date;
+  updatedAt: Date;
+} 
+*/
 model User {
   id            String    @id @default(cuid())
   name          String?
   email         String    @unique
   emailVerified DateTime?
   image         String?
+  username      String?   @unique
+  bio           String?
+  title         String?
+  location      String?
+  website       String?
+  twitter       String?
+  github        String?
+  linkedin      String?
+  postsCount    Int       @default(0)
+  badges        String[]  @default([]) 
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 

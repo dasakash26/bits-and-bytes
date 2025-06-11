@@ -4,10 +4,6 @@ export interface User {
   email: string;
   emailVerified?: Date;
   image?: string;
-  createdAt: Date;
-  updatedAt: Date;
-
-  // Extended fields for frontend
   username?: string;
   bio?: string;
   title?: string;
@@ -16,12 +12,10 @@ export interface User {
   twitter?: string;
   github?: string;
   linkedin?: string;
-  joinedDate: string;
-  followersCount: number;
-  followingCount: number;
   postsCount: number;
-  isVerified?: boolean;
-  badges?: string[];
+  badges: string[];
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface UserStats {
