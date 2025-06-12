@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { Categories } from "../types/blog";
-import { defaultCategories } from "../data/categories";
 
 export const useCategories = () => {
   const [categories, setCategories] = useState<Categories>([]);
@@ -10,12 +9,13 @@ export const useCategories = () => {
     const fetchCategories = async () => {
       try {
         setIsLoading(true);
-        // Simulate API delay
-        await new Promise((resolve) => setTimeout(resolve, 300));
+        console.log("Fetching categories from API...");
+        const res = await fetch("/api/category");
+        const defaultCategories = await res.json();
         setCategories(defaultCategories);
       } catch (error) {
         console.error("Error fetching categories:", error);
-        setCategories(defaultCategories);
+        setCategories([]);
       } finally {
         setIsLoading(false);
       }
