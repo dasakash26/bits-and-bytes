@@ -10,8 +10,17 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ posts: [], categories: [], authors: [] });
     }
 
-    // Sanitize the query to prevent potential issues
     const sanitizedQuery = query.trim().slice(0, 100); // Limit query length
+
+    // Check if database is available (for build-time compatibility)
+    if (!process.env.DATABASE_URL && process.env.NODE_ENV === "production") {
+      return NextResponse.json({
+        posts: [],
+        categories: [],
+        authors: [],
+        error: "Database not configured",
+      });
+    }
 
     try {
       const [posts, categories, authors] = await Promise.all([
