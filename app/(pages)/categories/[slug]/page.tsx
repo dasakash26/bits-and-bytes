@@ -19,10 +19,11 @@ export function generateColor(len: number) {
 export default async function CategoryPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
+  const resolvedParams = await params;
   const category = await prisma.category.findUnique({
-    where: { id: params.slug },
+    where: { id: resolvedParams.slug },
     include: {
       posts: {
         include: {

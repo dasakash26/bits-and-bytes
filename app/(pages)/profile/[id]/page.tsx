@@ -44,7 +44,11 @@ const defaultUserData: User = {
   updatedAt: new Date(),
 };
 
-export default function ProfilePage({ params }: { params: { id: string } }) {
+export default function ProfilePage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const { data: session } = useSession();
   const [isEditing, setIsEditing] = useState(false);
   const [profileData, setProfileData] = useState<User>(defaultUserData);
@@ -54,13 +58,12 @@ export default function ProfilePage({ params }: { params: { id: string } }) {
   // Fetch user data from API using email parameter
   useEffect(() => {
     const fetchUserData = async () => {
-      if (!params.id) return;
-      console.log(`/api/user/${params.id}`);
+      const resolvedParams = await params;
+      if (!resolvedParams.id) return;
+      console.log(`/api/user/${resolvedParams.id}`);
       setLoading(true);
       try {
-        const response = await fetch(
-          `/api/user/${params.id}`
-        );
+        const response = await fetch(`/api/user/${resolvedParams.id}`);
         console.log(response);
         if (response.ok) {
           const userData = await response.json();
@@ -77,7 +80,7 @@ export default function ProfilePage({ params }: { params: { id: string } }) {
     };
 
     fetchUserData();
-  }, [params.id]);
+  }, [params]);
 
   // Generate initials from user's name
   const getInitials = (name: string) => {
