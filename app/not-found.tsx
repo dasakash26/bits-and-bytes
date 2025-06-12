@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { FileQuestion, Home, Search, ArrowLeft } from "lucide-react";
+import { FileQuestion, Home, Search } from "lucide-react";
 import Link from "next/link";
+import { BackButton } from "@/components/ui/back-button";
 
 export default function NotFound() {
   return (
@@ -75,14 +76,7 @@ export default function NotFound() {
               </Link>
             </Button>
 
-            <Button
-              variant="ghost"
-              onClick={() => window.history.back()}
-              className="flex items-center gap-2 hover:scale-105 transition-transform"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              Go back
-            </Button>
+            <BackButton className="flex items-center gap-2 hover:scale-105 transition-transform" />
           </div>
 
           {/* Popular Links */}

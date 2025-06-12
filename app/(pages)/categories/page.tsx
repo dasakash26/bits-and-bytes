@@ -27,7 +27,7 @@ export default async function CategoriesPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {categories.map((category, index) => (
+          {categories.map((category) => (
             <Link key={category.id} href={`/categories/${category.id}`}>
               <Card className="group hover:shadow-xl transition-all duration-300 hover:scale-105 overflow-hidden cursor-pointer">
                 <div
