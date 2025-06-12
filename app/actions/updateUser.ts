@@ -1,7 +1,6 @@
 "use server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/auth";
-import { User } from "@/types/user";
 
 export async function updateUser(userData: any) {
   try {

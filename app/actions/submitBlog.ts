@@ -2,7 +2,6 @@
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/auth";
 import { revalidatePath } from "next/cache";
-import { z } from "zod";
 import blogPostSchema, { BlogPostSchema } from "../validation/blog.validation";
 import {
   sendBlogPublishedEmail,
