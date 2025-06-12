@@ -2,7 +2,6 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Heart, MessageCircle, Share, Bookmark } from "lucide-react";
-import { Comment } from "@/types/blog";
 
 interface PostActionsProps {
   isLiked: boolean;

@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Pencil, Sparkles } from "lucide-react";
+import { Pencil } from "lucide-react";
 import { PostDialog } from "./PostDialog";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { useSession } from "next-auth/react";
