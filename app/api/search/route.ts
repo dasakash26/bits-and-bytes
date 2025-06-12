@@ -10,9 +10,8 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ posts: [], categories: [], authors: [] });
     }
 
-    const sanitizedQuery = query.trim().slice(0, 100); // Limit query length
+    const sanitizedQuery = query.trim().slice(0, 100);
 
-    // Check if database is available (for build-time compatibility)
     if (!process.env.DATABASE_URL) {
       return NextResponse.json({
         posts: [],
@@ -22,7 +21,6 @@ export async function GET(request: NextRequest) {
       });
     }
 
-    // Additional check for Prisma Client initialization
     try {
       // Test Prisma connection
       await prisma.$connect();

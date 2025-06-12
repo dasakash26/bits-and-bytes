@@ -1,15 +1,11 @@
 import { notFound } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { AuthorInfo } from "@/components/AuthorInfo";
 import { CommentSection } from "@/components/CommentSection";
 import { prisma } from "@/lib/prisma";
 import { BlogActions } from "@/components/blog/BlogActions";
 import { BlogHeader } from "@/components/blog/BlogHeader";
-
+import { MarkdownContent } from "@/components/MarkdownContent";
 export default async function BlogPage({
   params,
 }: {
@@ -83,87 +79,8 @@ export default async function BlogPage({
           )}
 
           {/* Article Content */}
-          <div className="prose prose-lg max-w-none dark:prose-invert">
-            <ReactMarkdown
-              remarkPlugins={[remarkGfm]}
-              components={{
-                h1: ({ children }) => (
-                  <h1 className="text-3xl font-bold mt-8 mb-4 first:mt-0">
-                    {children}
-                  </h1>
-                ),
-                h2: ({ children }) => (
-                  <h2 className="text-2xl font-bold mt-6 mb-3">{children}</h2>
-                ),
-                h3: ({ children }) => (
-                  <h3 className="text-xl font-semibold mt-5 mb-2">
-                    {children}
-                  </h3>
-                ),
-                p: ({ children }) => (
-                  <p className="mb-4 leading-relaxed text-foreground">
-                    {children}
-                  </p>
-                ),
-                code: ({
-                  node,
-                  inline,
-                  className,
-                  children,
-                  ...props
-                }: any) => {
-                  const match = /language-(\w+)/.exec(className || "");
-                  const language = match ? match[1] : "";
-
-                  // Check if this is a code block (not inline)
-                  if (!inline) {
-                    return (
-                      <div className="my-6">
-                        <SyntaxHighlighter
-                          style={oneDark as any}
-                          language={language || "text"}
-                          PreTag="div"
-                          customStyle={{
-                            margin: 0,
-                            borderRadius: "8px",
-                            fontSize: "14px",
-                            padding: "16px",
-                          }}
-                          showLineNumbers={true}
-                        >
-                          {String(children).replace(/\n$/, "")}
-                        </SyntaxHighlighter>
-                      </div>
-                    );
-                  }
-
-                  return (
-                    <code
-                      className="bg-muted px-2 py-1 rounded text-sm font-mono border"
-                      {...props}
-                    >
-                      {children}
-                    </code>
-                  );
-                },
-                pre: ({ children }) => children,
-                ul: ({ children }) => (
-                  <ul className="list-disc pl-6 mb-4 space-y-2">{children}</ul>
-                ),
-                ol: ({ children }) => (
-                  <ol className="list-decimal pl-6 mb-4 space-y-2">
-                    {children}
-                  </ol>
-                ),
-                blockquote: ({ children }) => (
-                  <blockquote className="border-l-4 border-primary pl-4 italic my-4 text-muted-foreground">
-                    {children}
-                  </blockquote>
-                ),
-              }}
-            >
-              {post.content}
-            </ReactMarkdown>
+          <div className="prose prose-lg max-w-none">
+            <MarkdownContent content={post.content} />
           </div>
 
           {/* Blog Actions */}
