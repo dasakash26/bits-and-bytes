@@ -57,14 +57,14 @@ export const CommentItem = ({
   onLikeComment,
   postId,
 }: CommentItemProps) => {
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const [isDeleting, setIsDeleting] = React.useState(false);
+  const menuRef = React.useRef<HTMLDivElement>(null);
+
   if (!comment || !comment) {
     return null;
   }
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-  const [isDeleting, setIsDeleting] = React.useState(false);
-  const session = getSession();
-  const menuRef = React.useRef<HTMLDivElement>(null);
-
+  
   React.useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
