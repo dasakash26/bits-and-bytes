@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React,{useEffect} from "react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Heart, MessageCircle, MoreHorizontal, Loader } from "lucide-react";
@@ -9,7 +9,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Comment } from "@/types/blog";
 import { CommentForm } from "./CommentForm";
 import { deleteCommentAction } from "@/app/actions/comment.actions";
-import { getSession } from "next-auth/react";
 
 const MenuItem = ({
   children,
@@ -222,7 +221,7 @@ export const CommentItem = ({
 
         {comment.replies && comment.replies.length > 0 && (
           <div className="mt-3">
-            {comment.replies.map((reply: any) => (
+            {comment.replies.map((reply: Comment) => (
               <CommentItem
                 key={reply.id}
                 comment={reply}

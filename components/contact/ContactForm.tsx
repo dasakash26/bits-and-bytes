@@ -78,7 +78,7 @@ export const ContactForm = () => {
           message: "Failed to send message. Please try again.",
         });
       }
-    } catch (error) {
+    } catch {
       setSubmitStatus({
         type: "error",
         message: "An error occurred. Please try again.",
@@ -107,7 +107,7 @@ export const ContactForm = () => {
           <div>
             <CardTitle className="text-2xl font-bold">Send a Message</CardTitle>
             <CardDescription className="text-base">
-              I'll respond within 24 hours
+              I&apos;ll respond within 24 hours
             </CardDescription>
           </div>
         </div>

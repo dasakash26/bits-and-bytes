@@ -1,8 +1,24 @@
 import Script from "next/script";
 
+interface Author {
+  name?: string;
+  [key: string]: unknown;
+}
+
+interface ArticleData {
+  title?: string;
+  description?: string;
+  image?: string;
+  author?: Author;
+  datePublished?: string;
+  dateModified?: string;
+  url?: string;
+  [key: string]: unknown;
+}
+
 interface StructuredDataProps {
   type?: "website" | "blog" | "article" | "organization";
-  data?: Record<string, any>;
+  data?: ArticleData;
 }
 
 export function StructuredData({
