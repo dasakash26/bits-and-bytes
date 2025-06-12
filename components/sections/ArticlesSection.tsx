@@ -7,11 +7,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { prisma } from "@/lib/prisma";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
-import posts from "@/data/posts";
 
-export function ArticlesSection() {
+export async function ArticlesSection() {
+  const posts = await prisma.blogPost.findMany({
+    include: { author: true },
+  });
+
   const tags = [
     "🔥 Trending",
     "🤖 AI & ML",
