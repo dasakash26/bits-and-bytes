@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Heart, MessageCircle, MoreHorizontal, Loader } from "lucide-react";
@@ -61,11 +61,7 @@ export const CommentItem = ({
   const [isDeleting, setIsDeleting] = React.useState(false);
   const menuRef = React.useRef<HTMLDivElement>(null);
 
-  if (!comment || !comment) {
-    return null;
-  }
-  
-  React.useEffect(() => {
+  useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         setIsMenuOpen(false);
@@ -80,6 +76,10 @@ export const CommentItem = ({
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isMenuOpen]);
+
+  if (!comment) {
+    return null;
+  }
 
   const handleDelete = async () => {
     try {
