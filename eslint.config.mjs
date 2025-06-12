@@ -40,14 +40,14 @@ const eslintConfig = [
       "@typescript-eslint/no-this-alias": "warn",
       "@typescript-eslint/no-unused-expressions": "off",
       "@typescript-eslint/no-unnecessary-type-constraint": "off",
-      
+
       // React rules
       "react/no-unescaped-entities": "warn",
       "react-hooks/exhaustive-deps": "warn",
-      
+
       // Next.js rules
       "@next/next/no-img-element": "warn",
-      
+
       // Accessibility rules
       "jsx-a11y/alt-text": "warn",
     },

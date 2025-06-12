@@ -15,11 +15,7 @@ export function BackButton({ className }: BackButtonProps) {
   };
 
   return (
-    <Button
-      variant="ghost"
-      onClick={handleBack}
-      className={className}
-    >
+    <Button variant="ghost" onClick={handleBack} className={className}>
       <ArrowLeft className="w-4 h-4" />
       Go back
     </Button>
