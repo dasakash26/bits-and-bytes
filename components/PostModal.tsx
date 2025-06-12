@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -118,12 +119,15 @@ export const PostModal = ({
           <div className="px-6 py-6 space-y-6">
             {/* Post Image */}
             {post.image && (
-              <img
-                src={post.image}
-                alt={post.title}
-                className="w-full h-64 object-cover rounded-lg shadow-sm"
-                loading="lazy"
-              />
+              <div className="relative w-full h-64 rounded-lg overflow-hidden shadow-sm">
+                <Image
+                  src={post.image}
+                  alt={post.title}
+                  fill
+                  className="object-cover"
+                  loading="lazy"
+                />
+              </div>
             )}
 
             {/* Tags */}
