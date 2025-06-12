@@ -16,7 +16,6 @@ import ReactMarkdown from "react-markdown";
 import { AuthorInfo } from "./AuthorInfo";
 import { PostActions } from "./PostActions";
 import { CommentSection } from "./CommentSection";
-import { mockComments } from "../data/mockComments";
 import { useRouter } from "next/navigation";
 
 interface PostModalProps {
