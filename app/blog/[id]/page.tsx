@@ -88,7 +88,7 @@ export default async function BlogPage({
 
           {/* Comments Section */}
           <div className="border-t pt-8">
-            <CommentSection comments={post.comments as any} postId={post.id} />
+            <CommentSection comments={post.comments} />
           </div>
         </article>
       </main>

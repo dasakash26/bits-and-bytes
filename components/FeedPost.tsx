@@ -4,11 +4,11 @@ import { BlogPost } from "../types/blog";
 import { PostModal } from "./PostModal";
 import { PostCard } from "./Cards/PostCard";
 
-interface FeedPostProps {
-  post: BlogPost;
-}
 
-export const FeedPost = ({ post }: FeedPostProps) => {
+
+export const FeedPost = ({ post }: {
+  post: BlogPost;
+}) => {
   const [isLiked, setIsLiked] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
 

@@ -1,217 +1,36 @@
 "use client";
 
 import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Heart, MessageCircle, MoreHorizontal } from "lucide-react";
-import { formatDistanceToNow } from "date-fns";
 import { Comment } from "@/types/blog";
-import { submitCommentAction } from "@/app/actions/submitComment";
-import { Card, CardContent } from "@/components/ui/card";
+import { CommentForm } from "./comments/CommentForm";
+import { CommentList } from "./comments/CommentList";
+import {
+  handleAddComment,
+  handleLikeComment,
+} from "./comments/commentHandlers";
 
-interface CommentSectionProps {
-  comments: Comment[];
-  postId: string;
-}
 
-const handleAddComment = async (
-  postId: string,
-  content: string,
-  parentId: string | null
-) => {
-  if (!content.trim() || !postId) return;
-  try {
-    console.log("Adding comment:", { postId, content });
-    submitCommentAction(postId, content, parentId);
-  } catch (error) {
-    console.error("Error adding comment:", error);
-  }
-};
-
-export const CommentSection = ({ comments, postId }: CommentSectionProps) => {
-  console.log("Comment", comments);
+export const CommentSection = ({ comments}:{comments:Comment[]}) => {
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
-
-  const handleLikeComment = (commentId: string) => {
-    console.log("Liking comment:", commentId);
-  };
-
-  const CommentForm = ({
-    onSubmit,
-    placeholder = "What are your thoughts?",
-    onCancel,
-    autoFocus = false,
-  }: {
-    onSubmit: (content: string) => void;
-    placeholder?: string;
-    onCancel?: () => void;
-    autoFocus?: boolean;
-  }) => {
-    const [content, setContent] = useState("");
-
-    const handleSubmit = () => {
-      if (content.trim()) {
-        onSubmit(content);
-        setContent("");
-      }
-    };
-
-    return (
-      <div className="space-y-3">
-        <Textarea
-          placeholder={placeholder}
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          className={onCancel ? "min-h-[80px] text-sm" : "min-h-[100px]"}
-          autoFocus={autoFocus}
-        />
-        <div className={`flex ${onCancel ? "gap-2" : "justify-end"}`}>
-          <Button
-            onClick={handleSubmit}
-            disabled={!content.trim()}
-            size={onCancel ? "sm" : "default"}
-          >
-            {onCancel ? "Reply" : "Comment"}
-          </Button>
-          {onCancel && (
-            <Button variant="outline" size="sm" onClick={onCancel}>
-              Cancel
-            </Button>
-          )}
-        </div>
-      </div>
-    );
-  };
-
-  const CommentItem = ({
-    comment,
-    isReply = false,
-  }: {
-    comment: any;
-    isReply?: boolean;
-  }) => {
-    if (!comment || !comment.author) {
-      return null;
-    }
-
-    return (
-      <div className={`flex gap-3 ${isReply ? "ml-8 mt-3" : "mb-6"}`}>
-        <Avatar className="w-8 h-8">
-          <AvatarImage src={comment.author.image} />
-          <AvatarFallback>
-            {comment.author.name
-              ? comment.author.name.charAt(0).toUpperCase()
-              : "A"}
-          </AvatarFallback>
-        </Avatar>
-
-        <div className="flex-1 space-y-2">
-          <Card className="bg-muted/30 border-0 shadow-none p-0">
-            <CardContent className="p-3">
-              <div className="flex items-center gap-2 mb-1">
-                <span className="font-semibold text-sm">
-                  {comment.author.name || "Anonymous"}
-                </span>
-                {comment.author.username && (
-                  <>
-                    <span className="text-xs text-muted-foreground">
-                      @{comment.author.username}
-                    </span>
-                    <span className="text-xs text-muted-foreground">·</span>
-                  </>
-                )}
-                <span className="text-xs text-muted-foreground">
-                  {formatDistanceToNow(new Date(comment.createdAt), {
-                    addSuffix: true,
-                  })}
-                </span>
-              </div>
-              <p className="text-sm leading-relaxed">{comment.content}</p>
-            </CardContent>
-          </Card>
-
-          <div className="flex items-center gap-4 text-muted-foreground">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="p-1 h-auto"
-              onClick={() => handleLikeComment(comment.id)}
-            >
-              <Heart className="w-4 h-4 mr-1" />
-              <span className="text-xs">0</span>
-            </Button>
-
-            {!isReply && (
-              <Button
-                variant="ghost"
-                size="sm"
-                className="p-1 h-auto"
-                onClick={() =>
-                  setReplyingTo(replyingTo === comment.id ? null : comment.id)
-                }
-              >
-                <MessageCircle className="w-4 h-4 mr-1" />
-                <span className="text-xs">Reply</span>
-              </Button>
-            )}
-
-            <Button variant="ghost" size="sm" className="p-1 h-auto">
-              <MoreHorizontal className="w-4 h-4" />
-            </Button>
-          </div>
-
-          {replyingTo === comment.id && (
-            <div className="mt-3">
-              <CommentForm
-                onSubmit={(content) =>
-                  handleAddComment(postId, content, comment.id)
-                }
-                placeholder={`Reply to ${comment.author.name}...`}
-                onCancel={() => setReplyingTo(null)}
-                autoFocus
-              />
-            </div>
-          )}
-
-          {comment.replies && comment.replies.length > 0 && (
-            <div className="mt-3">
-              {comment.replies.map((reply: any) => (
-                <CommentItem key={reply.id} comment={reply} isReply />
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
-    );
-  };
-
-  const topLevelComments = comments.filter((comment) => !comment.parentId);
 
   return (
     <div className="space-y-6">
       <div className="border-b border-border pb-4">
         <h3 className="text-lg font-semibold mb-4">
-          Comments ({topLevelComments.length})
+          Comments ({comments.length})
         </h3>
 
         <CommentForm
-          onSubmit={(content) => handleAddComment(postId, content, null)}
+          onSubmit={(content) => handleAddComment(comments[0].postId, content, null)}
         />
       </div>
-
-      <div className="space-y-4">
-        {topLevelComments.length > 0 ? (
-          topLevelComments.map((comment) => (
-            <CommentItem key={comment.id} comment={comment} />
-          ))
-        ) : (
-          <div className="text-center py-8 text-muted-foreground">
-            <MessageCircle className="w-12 h-12 mx-auto mb-3 opacity-50" />
-            <p>No comments yet. Be the first to share your thoughts!</p>
-          </div>
-        )}
-      </div>
+      <CommentList
+        comments={comments}
+        replyingTo={replyingTo}
+        onSetReplyingTo={setReplyingTo}
+        onAddComment={handleAddComment}
+        onLikeComment={handleLikeComment}
+      />
     </div>
   );
 };

@@ -16,7 +16,16 @@ async function getPosts(): Promise<BlogPost[]> {
           },
         },
         category: true,
-        comments: true,
+        comments: {
+          include: {
+            author: true,
+            replies: {
+              include: {
+                author: true,
+              },
+            },
+          },
+        },
       },
       orderBy: {
         date: "desc",

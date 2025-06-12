@@ -1,3 +1,5 @@
+import { User } from "next-auth";
+
 export interface BlogPost {
   id: string;
   title: string;
@@ -44,8 +46,8 @@ export interface Comment{
   createdAt: Date;
   updatedAt: Date;
 
-  replies?: Comment[]; // Nested replies
-  author?: Author; // Author details for the comment
+  replies?: Comment[]; 
+  author?: User; 
 }
 
 export type BlogPosts = BlogPost[];

@@ -100,7 +100,7 @@ export async function submitBlogAction(
     throw new Error("Invalid blog post data: " + validatedBlog.error.message);
   }
 
-  const { id, authorId: validatedAuthorId, ...blogData } = validatedBlog.data;
+  const { ...blogData } = validatedBlog.data;
 
   const res = await prisma.blogPost.create({
     data: {

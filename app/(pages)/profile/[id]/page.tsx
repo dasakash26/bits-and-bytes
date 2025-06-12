@@ -101,7 +101,7 @@ export default function ProfilePage({
   const handleSave = async () => {
     try {
       console.log("Saving profile data:", profileData);
-      const updatedUser = await updateUser(profileData);
+      await updateUser(profileData);
       setOriginalData(profileData); // Update original data after successful save
       setIsEditing(false);
     } catch (error) {

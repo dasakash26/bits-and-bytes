@@ -16,11 +16,7 @@ export async function updateUser(userData: any) {
 
     // Extract only the User model fields, excluding relationships
     const {
-      id,
       name,
-      email,
-      emailVerified,
-      image,
       username,
       bio,
       title,
@@ -29,11 +25,6 @@ export async function updateUser(userData: any) {
       twitter,
       github,
       linkedin,
-      postsCount,
-      badges,
-      createdAt,
-      // Exclude author and other relationships
-      ...otherFields
     } = userData;
 
     const updatedUser = await prisma.user.update({
