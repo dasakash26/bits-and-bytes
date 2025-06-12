@@ -2,12 +2,13 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Heart, MessageCircle, Share, Bookmark } from "lucide-react";
+import { Comment } from "@/types/blog";
 
 interface PostActionsProps {
   isLiked: boolean;
   onLikeToggle: () => void;
   likeCount: number;
-  commentCount: number;
+  commentCount?: number;
   shareCount?: number;
   isBookmarked?: boolean;
   onBookmarkToggle?: () => void;
@@ -19,7 +20,7 @@ export const PostActions = ({
   isLiked,
   onLikeToggle,
   likeCount,
-  commentCount,
+  commentCount = 0,
   shareCount = 0,
   isBookmarked,
   onBookmarkToggle,

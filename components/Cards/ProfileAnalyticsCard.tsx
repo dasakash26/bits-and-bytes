@@ -39,7 +39,7 @@ export const ProfileCard = () => {
 
   const handleCardClick = () => {
     if (session) {
-      router.push("/profile/dasakash26");
+      router.push("/profile/{session.user.id}");
     }
   };
 

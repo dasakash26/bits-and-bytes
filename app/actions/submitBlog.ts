@@ -4,6 +4,10 @@ import { auth } from "@/auth";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import blogPostSchema, { BlogPostSchema } from "../validation/blog.validation";
+import {
+  sendBlogPublishedEmail,
+  sendNewPostNotificationToAdmin,
+} from "@/lib/email-templates";
 
 export async function submitBlogAction(
   postData: Omit<BlogPostSchema, "id" | "authorId">
@@ -14,9 +18,24 @@ export async function submitBlogAction(
   }
 
   // Verify the user exists in the database - try both id and email
-  let user = await prisma.user.findUnique({
+  let user: any = await prisma.user.findUnique({
     where: { id: session.id },
+    include: {
+      author: {
+        include: {
+          posts: true,
+        },
+      },
+    },
   });
+
+  //@security
+  //one can submit 5 posts
+  if (user?.author?.posts.length >= 5) {
+    throw new Error(
+      "You have reached the limit of 5 posts you need admin permission to post more."
+    );
+  }
 
   // If user not found by id, try by email as fallback
   if (!user && session.user.email) {
@@ -92,6 +111,54 @@ export async function submitBlogAction(
   });
 
   console.log("Blog post created successfully:", res.title);
+
+  // Send confirmation email to the user
+  let emailSent = false;
+  if (user.email) {
+    try {
+      const emailResult = await sendBlogPublishedEmail(
+        { name: user.name || null, email: user.email },
+        { id: res.id, title: res.title, readTime: res.readTime || null },
+        { name: category.name }
+      );
+
+      if (emailResult.success) {
+        console.log("Confirmation email sent successfully to:", user.email);
+        emailSent = true;
+      } else {
+        console.error("Failed to send confirmation email:", emailResult.error);
+      }
+    } catch (error) {
+      console.error("Error sending confirmation email:", error);
+    }
+  }
+
+  // Send admin notification email
+  try {
+    const adminEmailResult = await sendNewPostNotificationToAdmin(
+      { name: user.name || null, email: user.email },
+      { id: res.id, title: res.title, readTime: res.readTime || null },
+      { name: category.name }
+    );
+
+    if (adminEmailResult.success) {
+      console.log("Admin notification email sent successfully");
+    } else {
+      console.error(
+        "Failed to send admin notification email:",
+        adminEmailResult.error
+      );
+    }
+  } catch (error) {
+    console.error("Error sending admin notification email:", error);
+  }
+
   revalidatePath("/blog");
-  return res;
+  return {
+    ...res,
+    emailSent,
+    message: emailSent
+      ? "Blog post published successfully! A confirmation email has been sent to your email address."
+      : "Blog post published successfully!",
+  };
 }

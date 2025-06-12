@@ -4,31 +4,17 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ArrowRight, Folder } from "lucide-react";
 import { prisma } from "@/lib/prisma";
-
-const gradientColors = [
-  "from-blue-500 to-purple-500",
-  "from-pink-500 to-orange-500",
-  "from-green-500 to-teal-500",
-  "from-yellow-500 to-red-500",
-  "from-indigo-500 to-blue-500",
-  "from-purple-500 to-pink-500",
-];
+import { generateColor } from "./[slug]/page";
 
 export default async function CategoriesPage() {
   try {
     const categories = await prisma.category.findMany({
       include: {
         _count: {
-          select: {
-            posts: true,
-          },
+          select: { posts: true },
         },
       },
-      orderBy: {
-        posts: {
-          _count: "desc",
-        },
-      },
+      orderBy: { name: "asc" },
     });
 
     return (
@@ -45,9 +31,9 @@ export default async function CategoriesPage() {
             <Link key={category.id} href={`/categories/${category.id}`}>
               <Card className="group hover:shadow-xl transition-all duration-300 hover:scale-105 overflow-hidden cursor-pointer">
                 <div
-                  className={`h-32 bg-gradient-to-r ${
-                    gradientColors[index % gradientColors.length]
-                  } relative`}
+                  className={`h-32 bg-gradient-to-r ${generateColor(
+                    category._count.posts
+                  )} relative`}
                 >
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors" />
                   <div className="absolute bottom-4 left-4">

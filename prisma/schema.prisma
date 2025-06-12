@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
   output   = "../lib/generated/prisma"
@@ -13,27 +7,7 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
-/*
-interface User {
-  id: string;
-  name?: string;
-  email: string;
-  emailVerified?: Date;
-  image?: string;
-  username?: string;
-  bio?: string;
-  title?: string;
-  location?: string;
-  website?: string;
-  twitter?: string;
-  github?: string;
-  linkedin?: string;
-  postsCount: number;
-  badges: string[];
-  createdAt: Date;
-  updatedAt: Date;
-} 
-*/
+
 model User {
   id            String    @id @default(cuid())
   name          String?
@@ -49,13 +23,14 @@ model User {
   github        String?
   linkedin      String?
   postsCount    Int       @default(0)
-  badges        String[]  @default([]) 
+  badges        String[]  @default([])
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
   accounts Account[]
   sessions Session[]
   author   Author?
+  comments Comment[]
 }
 
 model Account {
@@ -95,17 +70,19 @@ model VerificationToken {
 }
 
 model BlogPost {
-  id           String   @id @default(cuid())
-  title        String
-  slug         String   @unique
-  excerpt     String?
-  content      String
-  image        String?
-  date         DateTime @default(now())
-  readTime     String?
-  likeCount    Int      @default(0)
-  commentCount Int      @default(0)
-  viewCount    Int      @default(0)
+  id        String    @id @default(cuid())
+  title     String
+  slug      String    @unique
+  excerpt   String?
+  content   String
+  image     String?
+  date      DateTime  @default(now())
+  readTime  String?
+  likeCount Int       @default(0)
+  viewCount Int       @default(0)
+  comments  Comment[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 
   // Relations
   authorId String
@@ -142,4 +119,20 @@ model Author {
   user   User   @relation(fields: [userId], references: [id])
 
   posts BlogPost[]
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  content   String
+  authorId  String
+  postId    String
+  parentId  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  author  User      @relation(fields: [authorId], references: [id])
+  post    BlogPost  @relation(fields: [postId], references: [id])
+  parent  Comment?  @relation("CommentReplies", fields: [parentId], references: [id])
+  replies Comment[] @relation("CommentReplies")
 }

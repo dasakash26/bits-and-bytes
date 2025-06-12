@@ -30,6 +30,7 @@ import { ContentEditor } from "./form/ContentEditor";
 import { usePostForm } from "@/hooks/usePostForm";
 import { generatePostSuggestions } from "@/lib/gemini";
 import { submitBlogAction } from "@/app/actions/submitBlog";
+import { toast } from "sonner";
 
 // Define the props for the PostForm component
 interface PostFormProps {
@@ -168,17 +169,39 @@ export const PostForm = ({ onClose }: PostFormProps) => {
         content: postContent,
       };
       console.log("Submitting post data:", postData);
-      await submitBlogAction(postData);
+      const result = await submitBlogAction(postData);
 
-      // Success - show brief success feedback before closing
+      // Success - show toast notification with email confirmation status
+      if (result.emailSent) {
+        toast.success("🎉 Blog Post Published!", {
+          description:
+            "Your post is live and a confirmation email has been sent to your inbox.",
+          duration: 5000,
+        });
+      } else {
+        toast.success("🎉 Blog Post Published!", {
+          description: "Your post is now live on Bits and Bytes!",
+          duration: 4000,
+        });
+      }
+
       console.log("Blog post published successfully!");
 
       // Close the modal after successful submission
       onClose();
     } catch (error) {
       console.error("Failed to submit blog post:", error);
-      // You can add toast notification here for error feedback
-      alert("Failed to submit blog post. Please try again.");
+
+      // Show error toast with specific error message
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "Failed to submit blog post. Please try again.";
+
+      toast.error("❌ Publication Failed", {
+        description: errorMessage,
+        duration: 6000,
+      });
     } finally {
       setIsSubmitting(false);
     }

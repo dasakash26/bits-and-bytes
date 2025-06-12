@@ -1,42 +1,42 @@
-"use client";
-
-import React, { useState } from "react";
-import { useParams } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, Grid, List, Filter } from "lucide-react";
-import { PostCard } from "@/components/Cards/PostCard";
-import blogPosts from "@/data/posts";
 import { CategoryCarousel } from "@/components/CategoryCarousel";
+import { prisma } from "@/lib/prisma";
+import { CategoryPageClient } from "./CategoryPageClient";
 
-const categoryData = {
-  technology: {
-    title: "Technology",
-    description: "Latest trends in tech, programming, and innovation",
-    color: "from-blue-500 to-purple-500",
-    posts: blogPosts.filter((post) => post.tags.includes("Technology")),
-  },
-  design: {
-    title: "Design",
-    description: "UI/UX, visual design, and creative inspiration",
-    color: "from-pink-500 to-orange-500",
-    posts: blogPosts.filter((post) => post.tags.includes("Design")),
-  },
-  lifestyle: {
-    title: "Lifestyle",
-    description: "Personal growth, productivity, and life insights",
-    color: "from-green-500 to-teal-500",
-    posts: blogPosts.filter((post) => post.tags.includes("Lifestyle")),
-  },
-};
+export function generateColor(len: number) {
+  const colors = [
+    "from-blue-500 to-purple-500",
+    "from-pink-500 to-orange-500",
+    "from-green-500 to-teal-500",
+    "from-yellow-500 to-red-500",
+    "from-indigo-500 to-blue-500",
+    "from-purple-500 to-pink-500",
+  ];
+  return colors[len % colors.length];
+}
 
-export default function CategoryPage() {
-  const params = useParams();
-  const slug = params.slug as string;
-  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
-
-  const category = categoryData[slug as keyof typeof categoryData];
+export default async function CategoryPage({
+  params,
+}: {
+  params: { slug: string };
+}) {
+  const category = await prisma.category.findUnique({
+    where: { id: params.slug },
+    include: {
+      posts: {
+        include: {
+          author: {
+            include: {
+              user: true,
+            },
+          },
+          category: true,
+          comments: true,
+        },
+      },
+    },
+  });
 
   if (!category) {
     return (
@@ -55,11 +55,13 @@ export default function CategoryPage() {
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
       <div
-        className={`bg-gradient-to-r ${category.color} text-white py-16 px-4`}
+        className={`bg-gradient-to-r ${generateColor(
+          category.posts.length
+        )} text-white py-16 px-4`}
       >
         <div className="container mx-auto text-center">
           <h1 className="text-4xl md:text-6xl font-bold mb-4">
-            {category.title}
+            {category.name}
           </h1>
           <p className="text-xl opacity-90 max-w-2xl mx-auto">
             {category.description}
@@ -74,52 +76,13 @@ export default function CategoryPage() {
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
           <h2 className="text-2xl font-bold mb-4">
-            Featured in {category.title}
+            Featured in {category.name}
           </h2>
-          <CategoryCarousel posts={category.posts.slice(0, 5)} />
+          <CategoryCarousel categoryId={category.id} />
         </div>
 
-        {/* Controls */}
-        <div className="flex items-center justify-between mb-6">
-          <h3 className="text-xl font-semibold">All {category.title} Posts</h3>
-          <div className="flex items-center gap-2">
-            <Button
-              variant={viewMode === "grid" ? "default" : "outline"}
-              size="sm"
-              onClick={() => setViewMode("grid")}
-            >
-              <Grid className="w-4 h-4" />
-            </Button>
-            <Button
-              variant={viewMode === "list" ? "default" : "outline"}
-              size="sm"
-              onClick={() => setViewMode("list")}
-            >
-              <List className="w-4 h-4" />
-            </Button>
-          </div>
-        </div>
-
-        {/* Posts Grid/List */}
-        <div
-          className={`grid gap-6 ${
-            viewMode === "grid"
-              ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
-              : "grid-cols-1"
-          }`}
-        >
-          {category.posts.map((post) => (
-            <PostCard
-              key={post.id}
-              post={post}
-              onPostClick={() => {}}
-              isLiked={false}
-              isBookmarked={false}
-              onLikeToggle={() => {}}
-              onBookmarkToggle={() => {}}
-            />
-          ))}
-        </div>
+        {/* Client Component for Interactive Features */}
+        <CategoryPageClient category={category} />
       </div>
     </div>
   );

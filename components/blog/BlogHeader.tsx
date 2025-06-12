@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Bookmark, Share } from "lucide-react";
 
-export const ArticleHeader = () => {
+export const BlogHeader = () => {
   const router = useRouter();
   const [isBookmarked, setIsBookmarked] = useState(false);
 

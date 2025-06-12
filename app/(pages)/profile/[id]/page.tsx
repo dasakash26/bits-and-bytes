@@ -44,35 +44,40 @@ const defaultUserData: User = {
   updatedAt: new Date(),
 };
 
-interface ProfilePageProps {
-  params: Promise<{
-    username: string;
-  }>;
-}
-
-export default function ProfilePage({ params }: ProfilePageProps) {
+export default function ProfilePage({ params }: { params: { id: string } }) {
   const { data: session } = useSession();
   const [isEditing, setIsEditing] = useState(false);
   const [profileData, setProfileData] = useState<User>(defaultUserData);
   const [originalData, setOriginalData] = useState<User>(defaultUserData);
-  const [username, setUsername] = useState<string>("");
+  const [loading, setLoading] = useState(true);
 
-  // Resolve params asynchronously
+  // Fetch user data from API using email parameter
   useEffect(() => {
-    const resolveParams = async () => {
-      const resolvedParams = await params;
-      setUsername(resolvedParams.username);
+    const fetchUserData = async () => {
+      if (!params.id) return;
+      console.log(`/api/user/${params.id}`);
+      setLoading(true);
+      try {
+        const response = await fetch(
+          `/api/user/${params.id}`
+        );
+        console.log(response);
+        if (response.ok) {
+          const userData = await response.json();
+          setProfileData(userData);
+          setOriginalData(userData);
+        } else {
+          console.error("User not found");
+        }
+      } catch (error) {
+        console.error("Failed to fetch user data:", error);
+      } finally {
+        setLoading(false);
+      }
     };
-    resolveParams();
-  }, [params]);
 
-  // Prefill profile data with session data
-  useEffect(() => {
-    if (session?.user) {
-      setProfileData(session.user as User);
-      setOriginalData(session.user as User);
-    }
-  }, [session]);
+    fetchUserData();
+  }, [params.id]);
 
   // Generate initials from user's name
   const getInitials = (name: string) => {
@@ -84,11 +89,10 @@ export default function ProfilePage({ params }: ProfilePageProps) {
       .slice(0, 2);
   };
 
-  // Use session data or fallback values
-  const userName = session?.user?.name || "Guest User";
-  const userEmail = session?.user?.email || "";
-  const userImage = session?.user?.image || "";
-  const displayName = profileData.name || userName;
+  // Use profile data instead of session data
+  const displayName = profileData.name || "Unknown User";
+  const userEmail = profileData.email || "";
+  const userImage = profileData.image || "";
   const userInitials = getInitials(displayName);
 
   const handleSave = async () => {
@@ -107,7 +111,36 @@ export default function ProfilePage({ params }: ProfilePageProps) {
     setIsEditing(false);
   };
 
-  const isOwner = session;
+  // Check if current user is the profile owner
+  const isOwner = session?.user?.email === profileData.email;
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-background via-background/95 to-muted/20">
+        <div className="container mx-auto px-4 py-8">
+          <div className="max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              <div className="lg:col-span-2 space-y-6">
+                <Card className="relative bg-card border-border shadow-lg overflow-hidden animate-pulse">
+                  <div className="h-32 bg-muted"></div>
+                  <CardContent className="relative pt-0 pb-6 px-6">
+                    <div className="flex flex-col items-center -mt-16">
+                      <div className="w-28 h-28 bg-muted rounded-full"></div>
+                      <div className="text-center mt-6 space-y-4 w-full">
+                        <div className="h-8 bg-muted rounded w-48 mx-auto"></div>
+                        <div className="h-4 bg-muted rounded w-32 mx-auto"></div>
+                        <div className="h-20 bg-muted rounded w-full"></div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background/95 to-muted/20">
@@ -129,14 +162,14 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                       <Avatar className="w-28 h-28 border-4 border-background shadow-2xl ring-4 ring-primary/10 transition-transform duration-300 hover:scale-105">
                         <AvatarImage
                           src={userImage}
-                          alt={userName}
+                          alt={displayName}
                           className="object-cover"
                         />
                         <AvatarFallback className="text-2xl font-bold bg-gradient-to-br from-primary to-primary/70 text-white">
                           {userInitials}
                         </AvatarFallback>
                       </Avatar>
-                      {session && (
+                      {profileData.id && (
                         <div className="absolute -bottom-2 -right-2 w-10 h-10 bg-yellow-400 rounded-full border-4 border-background flex items-center justify-center shadow-lg">
                           <Star className="w-5 h-5 text-yellow-800 fill-current" />
                         </div>
@@ -220,7 +253,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                           </div>
                         ) : (
                           <p className="text-primary font-semibold text-xl">
-                            @{profileData.username || username}
+                            @{profileData.username}
                           </p>
                         )}
 
@@ -276,7 +309,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                       </div>
 
                       {/* Email Display */}
-                      {session && userEmail && (
+                      {userEmail && (
                         <div className="flex justify-center">
                           <p className="text-muted-foreground text-sm bg-muted/20 px-4 py-2 rounded-lg border border-border/50">
                             {userEmail}
@@ -437,7 +470,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
             </div>
 
             {/* Right Column - Analytics */}
-            {session && (
+            {profileData.id && (
               <div className="space-y-6">
                 <Card className="bg-card border-border shadow-lg">
                   <CardHeader className="pb-4">

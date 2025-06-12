@@ -6,26 +6,10 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ChevronLeft, ChevronRight, Clock, User } from "lucide-react";
 import Link from "next/link";
-
-interface Post {
-  id: string;
-  title: string;
-  excerpt: string | null;
-  featuredImage: string | null;
-  readTimeMinutes: number;
-  createdAt: Date;
-  author: {
-    user: {
-      name: string | null;
-    } | null;
-  };
-  tags: Array<{
-    name: string;
-  }>;
-}
+import { BlogPost } from "@/lib/generated/prisma";
 
 interface CarouselClientProps {
-  posts: Post[];
+  posts: BlogPost[];
 }
 
 export const CarouselClient = ({ posts }: CarouselClientProps) => {
@@ -68,10 +52,10 @@ export const CarouselClient = ({ posts }: CarouselClientProps) => {
         <Link href={`/blog/${currentPost.id}`}>
           <div className="relative h-96 md:h-[500px] cursor-pointer">
             {/* Background Image */}
-            {currentPost.featuredImage && (
+            {currentPost.image && (
               <div className="absolute inset-0">
                 <img
-                  src={currentPost.featuredImage}
+                  src={currentPost.image}
                   alt={currentPost.title}
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
@@ -85,10 +69,10 @@ export const CarouselClient = ({ posts }: CarouselClientProps) => {
                 <div className="flex flex-wrap gap-2 mb-4">
                   {currentPost.tags.slice(0, 3).map((tag, index) => (
                     <Badge
-                      key={`${tag.name}-${index}`}
+                      key={`${tag}-${index}`}
                       className="bg-white/20 text-white border-white/30"
                     >
-                      #{tag.name}
+                      #{tag}
                     </Badge>
                   ))}
                 </div>
@@ -106,11 +90,11 @@ export const CarouselClient = ({ posts }: CarouselClientProps) => {
                 <div className="flex items-center gap-6 text-sm opacity-75">
                   <div className="flex items-center gap-2">
                     <User className="w-4 h-4" />
-                    <span>{currentPost.author.user?.name || "Anonymous"}</span>
+                    <span>{currentPost.authorId || "Anonymous"}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Clock className="w-4 h-4" />
-                    <span>{currentPost.readTimeMinutes} min read</span>
+                    <span>{currentPost.readTime} min read</span>
                   </div>
                 </div>
               </div>
@@ -160,9 +144,9 @@ export const CarouselClient = ({ posts }: CarouselClientProps) => {
               }`}
             >
               <div className="w-20 h-12 md:w-24 md:h-16 rounded-lg overflow-hidden">
-                {post.featuredImage ? (
+                {post.image ? (
                   <img
-                    src={post.featuredImage}
+                    src={post.image}
                     alt={post.title}
                     className="w-full h-full object-cover transition-transform group-hover/thumb:scale-105"
                   />

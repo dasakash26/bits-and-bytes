@@ -2,10 +2,9 @@
 
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { BlogPost } from "../../types/blog";
-import { Bookmark, Clock, TrendingUp } from "lucide-react";
+import { Clock, TrendingUp } from "lucide-react";
 import { PostActions } from "../PostActions";
 import { AuthorInfo } from "../AuthorInfo";
 
@@ -52,9 +51,12 @@ export const PostCard = ({
 
         {/* Post Content */}
         <div className="p-4 space-y-3">
-          <div className="space-y-2 cursor-pointer" onClick={onPostClick}>
+          <div className="space-y-2">
             <div className="flex items-start justify-between gap-2">
-              <h2 className="text-lg font-semibold leading-tight group-hover:text-primary transition-colors line-clamp-2 flex-1">
+              <h2
+                className="text-lg font-semibold leading-tight group-hover:text-primary transition-colors line-clamp-2 flex-1 cursor-pointer hover:underline"
+                onClick={onPostClick}
+              >
                 {post.title}
               </h2>
               <div className="flex items-center gap-1 text-xs text-muted-foreground bg-muted/50 px-2 py-1 rounded-full">
@@ -95,16 +97,14 @@ export const PostCard = ({
           </div>
 
           {/* Footer Actions */}
-          <div className="pt-2 border-t border-border/50">
-            <PostActions
-              isLiked={isLiked}
-              onLikeToggle={onLikeToggle}
-              likeCount={42}
-              commentCount={12}
-              isBookmarked={isBookmarked}
-              onBookmarkToggle={onBookmarkToggle}
-            />
-          </div>
+          <PostActions
+            isLiked={isLiked}
+            onLikeToggle={onLikeToggle}
+            likeCount={post.likeCount}
+            commentCount={post.comments?.length || 0}
+            isBookmarked={isBookmarked}
+            onBookmarkToggle={onBookmarkToggle}
+          />
         </div>
       </CardContent>
     </Card>

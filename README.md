@@ -1,36 +1,52 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Bits and Bytes
 
-## Getting Started
+## Project Overview
+Bits and Bytes is a modern, full-stack tech blogging platform built specifically for developers. It's designed as a community-driven space where developers can share insights, tutorials, and experiences in software development.
 
-First, run the development server:
+## Tech Stack
+- **Frontend:** Next.js 15 with React 19, TypeScript
+- **Styling:** Tailwind CSS 4 with Radix UI components
+- **Database:** PostgreSQL with Prisma ORM
+- **Authentication:** NextAuth.js v5
+- **AI Integration:** Google Gemini AI for content enhancement
+- **Email:** Nodemailer for contact/newsletter functionality
+- **Content:** Markdown with syntax highlighting
+- **State Management:** React hooks and server components
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Key Features
+- ✅ **Modern Tech Stack:** Built with Next.js 15, React 19, and TypeScript
+- ✅ **Beautiful UI:** Tailwind CSS 4 with Radix UI components
+- ✅ **Database Integration:** PostgreSQL with Prisma ORM
+- ✅ **Authentication:** NextAuth.js v5 with Google and Email providers
+- ✅ **AI-Powered Content:** Google Gemini AI for content enhancement and suggestions
+- ✅ **Email Notifications:** Automated emails for successful blog submissions
+- ✅ **Admin Notifications:** Email alerts to admins for new content
+- ✅ **Content Management:** Markdown editor with syntax highlighting
+- ✅ **Responsive Design:** Mobile-first responsive design
+- ✅ **Real-time Feedback:** Toast notifications for user actions
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## TODO
+- [x] Set up Next.js 15 project with TypeScript
+- [x] Configure Tailwind CSS 4 and Radix UI
+- [x] Set up PostgreSQL database
+- [x] Configure Prisma ORM
+- [x] Implement NextAuth.js v5 authentication
+- [x] Create user registration/login system
+- [x] Design and implement blog post creation interface
+- [x] Add markdown editor with syntax highlighting
+- [x] Integrate Google Gemini AI for content enhancement
+- [x] Implement blog post listing and filtering
+- [x] Add search functionality
+- [x] Create user profile pages
+- [x] Set up email system with Nodemailer
+- [x] Implement email notifications for blog submissions
+- [x] Add admin email notifications for new posts
+- [x] Implement comment system
+- [x] Add responsive design
+- [x] Add toast notifications for user feedback
+- [ ] Write comprehensive tests
+- [ ] Deploy to production
+- [ ] Add analytics and monitoring
+- [ ] Implement newsletter functionality
+- [ ] Add social sharing features
+- [ ] Fix Like feature

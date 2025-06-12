@@ -10,14 +10,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
-import {
-  X,
-  Bookmark,
-  ExternalLink,
-  Share2,
-  Plus,
-  Minus,
-} from "lucide-react";
+import { X, Bookmark, ExternalLink, Share2, Plus, Minus } from "lucide-react";
 import { BlogPost } from "../types/blog";
 import ReactMarkdown from "react-markdown";
 import { AuthorInfo } from "./AuthorInfo";
@@ -158,7 +151,7 @@ export const PostModal = ({
 
             {/* Comment Section */}
             <div className="mt-8 pt-6 border-t border-border">
-              <CommentSection comments={mockComments} />
+              <CommentSection comments={post.comments} postId={post.id} />
             </div>
           </div>
 
@@ -169,7 +162,7 @@ export const PostModal = ({
                 isLiked={isLiked}
                 onLikeToggle={onLikeToggle}
                 likeCount={post.likeCount}
-                commentCount={post.commentCount}
+                commentCount={post.comments?.length || 0}
                 showBorder={false}
               />
               <div className="flex items-center gap-2">

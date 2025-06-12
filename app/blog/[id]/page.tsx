@@ -3,23 +3,15 @@ import { Badge } from "@/components/ui/badge";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import {
-  oneDark,
-  oneLight,
-} from "react-syntax-highlighter/dist/esm/styles/prism";
+import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { AuthorInfo } from "@/components/AuthorInfo";
 import { CommentSection } from "@/components/CommentSection";
-import { mockComments } from "@/data/mockComments";
-import { ArticleHeader } from "@/components/article/ArticleHeader";
-import { ArticleActions } from "@/components/article/ArticleActions";
 import { prisma } from "@/lib/prisma";
+import { BlogActions } from "@/components/blog/BlogActions";
+import { BlogHeader } from "@/components/blog/BlogHeader";
 
-interface ArticlePageProps {
-  params: { id: string };
-}
-
-export default async function ArticlePage({ params }: ArticlePageProps) {
-  const postId = params.id;
+export default async function BlogPage({ params }: { params: { id: string } }) {
+  const postId = params?.id;
   const post = await prisma.blogPost.findUnique({
     where: { id: postId },
     include: {
@@ -29,6 +21,16 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         },
       },
       category: true,
+      comments: {
+        include: {
+          author: true,
+          replies: {
+            include: {
+              author: true,
+            },
+          },
+        },
+      },
     },
   });
 
@@ -38,7 +40,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
   return (
     <div className="min-h-screen bg-background">
-      <ArticleHeader />
+      <BlogHeader />
 
       {/* Article Content */}
       <main className="container mx-auto px-4 py-8 max-w-4xl">
@@ -160,12 +162,12 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
             </ReactMarkdown>
           </div>
 
-          {/* Article Actions */}
-          <ArticleActions post={post} />
+          {/* Blog Actions */}
+          <BlogActions post={post as any} />
 
           {/* Comments Section */}
           <div className="border-t pt-8">
-            <CommentSection comments={mockComments} />
+            <CommentSection comments={post.comments} postId={post.id} />
           </div>
         </article>
       </main>

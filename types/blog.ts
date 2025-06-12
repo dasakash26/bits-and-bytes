@@ -2,7 +2,7 @@ export interface BlogPost {
   id: string;
   title: string;
   slug: string;
-  excerpt: string| null; // Optional excerpt for SEO and previews
+  excerpt: string| null;
   authorId: string; 
   author: Author; 
   date: Date; 
@@ -13,8 +13,8 @@ export interface BlogPost {
   image: string| null; 
   content: string;
   likeCount: number;
-  commentCount: number;
   viewCount: number;
+  comments: Comment[];
 }
 
 export interface Category {
@@ -33,6 +33,19 @@ export interface Author {
   github?: string|null;
   linkedin?: string|null;
   userId?: string|null; 
+}
+
+export interface Comment{
+  id: string;
+  content: string;
+  authorId: string;
+  postId: string;
+  parentId?: string|null;
+  createdAt: Date;
+  updatedAt: Date;
+
+  replies?: Comment[]; // Nested replies
+  author?: Author; // Author details for the comment
 }
 
 export type BlogPosts = BlogPost[];

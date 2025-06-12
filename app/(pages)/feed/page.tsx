@@ -16,66 +16,14 @@ async function getPosts(): Promise<BlogPost[]> {
           },
         },
         category: true,
+        comments: true,
       },
       orderBy: {
         date: "desc",
       },
     });
 
-    // Transform the database data to match the BlogPost interface
-    return posts.map((post) => ({
-      id: post.id,
-      title: post.title,
-      slug: post.slug,
-      excerpt: post.excerpt || "", // Handle null by providing empty string
-      authorId: post.authorId,
-      author: {
-        id: post.author.id,
-        name: post.author.name,
-        avatar: post.author.avatar || undefined,
-        bio: post.author.bio || undefined,
-        twitter: post.author.twitter || undefined,
-        github: post.author.github || undefined,
-        linkedin: post.author.linkedin || undefined,
-        userId: post.author.userId || undefined, // Handle null
-        user: post.author.user
-          ? {
-              id: post.author.user.id,
-              name: post.author.user.name || undefined,
-              email: post.author.user.email,
-              emailVerified: post.author.user.emailVerified || undefined,
-              image: post.author.user.image || undefined,
-              username: post.author.user.username || undefined,
-              bio: post.author.user.bio || undefined,
-              title: post.author.user.title || undefined,
-              location: post.author.user.location || undefined,
-              website: post.author.user.website || undefined,
-              twitter: post.author.user.twitter || undefined,
-              github: post.author.user.github || undefined,
-              linkedin: post.author.user.linkedin || undefined,
-              postsCount: post.author.user.postsCount,
-              badges: post.author.user.badges,
-              createdAt: post.author.user.createdAt,
-              updatedAt: post.author.user.updatedAt,
-            }
-          : undefined,
-      },
-      date: post.date,
-      readTime: post.readTime || "5 min read", // Handle null
-      categoryId: post.categoryId,
-      category: {
-        id: post.category.id,
-        name: post.category.name,
-        description: post.category.description || undefined,
-        icon: post.category.icon || undefined,
-      },
-      tags: post.tags,
-      image: post.image || "", // Handle null by providing empty string
-      likeCount: post.likeCount,
-      commentCount: post.commentCount,
-      viewCount: post.viewCount,
-      content: post.content,
-    }));
+    return posts;
   } catch (error) {
     console.error("Error fetching posts:", error);
     return [];
