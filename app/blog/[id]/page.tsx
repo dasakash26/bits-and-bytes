@@ -10,8 +10,12 @@ import { prisma } from "@/lib/prisma";
 import { BlogActions } from "@/components/blog/BlogActions";
 import { BlogHeader } from "@/components/blog/BlogHeader";
 
-export default async function BlogPage({ params }: { params: { id: string } }) {
-  const postId = params?.id;
+export default async function BlogPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id: postId } = await params;
   const post = await prisma.blogPost.findUnique({
     where: { id: postId },
     include: {
