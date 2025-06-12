@@ -47,7 +47,7 @@ export default async function BlogPage({ params }: { params: { id: string } }) {
         <article className="space-y-8">
           {/* Article Header */}
           <header className="space-y-6">
-            <AuthorInfo post={post} showMoreButton={false} />
+            <AuthorInfo post={post as any} showMoreButton={false} />
 
             <h1 className="text-4xl font-bold leading-tight">{post.title}</h1>
 
@@ -167,7 +167,7 @@ export default async function BlogPage({ params }: { params: { id: string } }) {
 
           {/* Comments Section */}
           <div className="border-t pt-8">
-            <CommentSection comments={post.comments} postId={post.id} />
+            <CommentSection comments={post.comments as any} postId={post.id} />
           </div>
         </article>
       </main>
