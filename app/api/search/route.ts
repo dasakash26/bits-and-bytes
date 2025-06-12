@@ -13,13 +13,30 @@ export async function GET(request: NextRequest) {
     const sanitizedQuery = query.trim().slice(0, 100); // Limit query length
 
     // Check if database is available (for build-time compatibility)
-    if (!process.env.DATABASE_URL && process.env.NODE_ENV === "production") {
+    if (!process.env.DATABASE_URL) {
       return NextResponse.json({
         posts: [],
         categories: [],
         authors: [],
         error: "Database not configured",
       });
+    }
+
+    // Additional check for Prisma Client initialization
+    try {
+      // Test Prisma connection
+      await prisma.$connect();
+    } catch (connectionError) {
+      console.error("Database connection failed:", connectionError);
+      return NextResponse.json(
+        {
+          posts: [],
+          categories: [],
+          authors: [],
+          error: "Database temporarily unavailable",
+        },
+        { status: 503 }
+      );
     }
 
     try {
