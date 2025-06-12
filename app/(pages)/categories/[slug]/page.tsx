@@ -1,4 +1,4 @@
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { CategoryCarousel } from "@/components/CategoryCarousel";
 import { prisma } from "@/lib/prisma";
