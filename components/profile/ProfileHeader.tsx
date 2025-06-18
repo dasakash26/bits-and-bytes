@@ -7,7 +7,7 @@ import { Star, Edit, Save, X } from "lucide-react";
 import { User } from "@/types/user";
 
 interface ProfileHeaderProps {
-  profileData: User & { posts?: any[] };
+  profileData: User;
   setProfileData: (data: User) => void;
   isEditing: boolean;
   setIsEditing: (editing: boolean) => void;

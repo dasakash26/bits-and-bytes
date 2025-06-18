@@ -1,3 +1,4 @@
+import "no-store";
 import React from "react";
 import { ProfileCard } from "@/components/Cards/ProfileCard";
 import { NewPostInput } from "@/components/post/NewPostInput";
