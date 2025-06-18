@@ -154,7 +154,7 @@ export const PostModal = ({
 
             {/* Comment Section */}
             <div className="mt-8 pt-6 border-t border-border">
-              <CommentSection postId={post.id}comments={post.comments} />
+              <CommentSection postId={post.id} comments={post.comments} />
             </div>
           </div>
 
