@@ -30,7 +30,6 @@ async function getPosts(): Promise<BlogPost[]> {
         date: "desc",
       },
     });
-    console.log("Fetched posts in feed:", posts);
     return posts;
   } catch (error) {
     console.error("Error fetching posts:", error);
@@ -39,8 +38,12 @@ async function getPosts(): Promise<BlogPost[]> {
 }
 
 export default async function FeedPage() {
+  let time = Date.now();
   const posts = await getPosts();
-
+  time = Date.now() - time;
+  console.log(">> Fetching posts took:", time, "ms");
+  console.log(">> Fetched posts of length:", posts.length);
+  
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-6">
