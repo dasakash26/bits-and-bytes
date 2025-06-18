@@ -16,7 +16,7 @@ export const ContactInfo = () => {
   return (
     <>
       {/* Contact Information */}
-      <Card className="border-2 border-primary/10 bg-gradient-to-br from-primary/5 to-primary/10 hover:shadow-lg transition-all duration-300">
+      <Card className="border-2 border-primary/10 bg-gradient-to-br from-primary-light to-primary/10 hover:shadow-elevation-medium transition-all duration-300">
         <CardHeader>
           <CardTitle className="flex items-center space-x-2">
             <Zap className="w-5 h-5 text-primary" />
@@ -26,7 +26,7 @@ export const ContactInfo = () => {
         <CardContent className="space-y-4">
           <div className="flex items-center space-x-4 p-4 bg-background/60 rounded-lg border border-primary/20 hover:bg-background/80 transition-colors">
             <div className="w-10 h-10 bg-gradient-to-r from-primary to-primary/60 rounded-full flex items-center justify-center">
-              <Mail className="w-5 h-5 text-white" />
+              <Mail className="w-5 h-5 text-primary-foreground" />
             </div>
             <div>
               <p className="font-semibold">Email</p>
@@ -47,8 +47,8 @@ export const ContactInfo = () => {
           </div>
 
           <div className="flex items-center space-x-4 p-4 bg-background/60 rounded-lg border border-primary/20 hover:bg-background/80 transition-colors">
-            <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-blue-400 rounded-full flex items-center justify-center">
-              <MapPin className="w-5 h-5 text-white" />
+            <div className="w-10 h-10 bg-gradient-to-r from-accent to-accent/80 rounded-full flex items-center justify-center">
+              <MapPin className="w-5 h-5 text-accent-foreground" />
             </div>
             <div>
               <p className="font-semibold">Location</p>
@@ -59,10 +59,10 @@ export const ContactInfo = () => {
       </Card>
 
       {/* Enhanced Social Links */}
-      <Card className="border-2 border-primary/10 hover:shadow-lg transition-all duration-300">
+      <Card className="border-2 border-primary/10 hover:shadow-elevation-medium transition-all duration-300">
         <CardHeader>
           <CardTitle className="flex items-center space-x-2">
-            <Star className="w-5 h-5 text-yellow-500" />
+            <Star className="w-5 h-5 text-warning" />
             <span>Connect</span>
           </CardTitle>
         </CardHeader>
@@ -70,7 +70,7 @@ export const ContactInfo = () => {
           <div className="space-y-3">
             <Button
               variant="outline"
-              className="w-full justify-start h-12 hover:bg-blue-500/10 hover:border-blue-500 transition-all duration-300 group"
+              className="w-full justify-start h-12 hover:bg-primary-light hover:border-primary transition-all duration-300 group"
               asChild
             >
               <a
@@ -78,13 +78,13 @@ export const ContactInfo = () => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Twitter className="w-4 h-4 mr-3 text-blue-500 group-hover:scale-110 transition-transform" />
+                <Twitter className="w-4 h-4 mr-3 text-primary group-hover:scale-110 transition-transform" />
                 <span className="font-medium">Follow on Twitter</span>
               </a>
             </Button>
             <Button
               variant="outline"
-              className="w-full justify-start h-12 hover:bg-gray-800/10 hover:border-gray-800 dark:hover:bg-gray-200/10 dark:hover:border-gray-200 transition-all duration-300 group"
+              className="w-full justify-start h-12 hover:bg-secondary-hover hover:border-border-hover transition-all duration-300 group"
               asChild
             >
               <a
@@ -92,13 +92,13 @@ export const ContactInfo = () => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Github className="w-4 h-4 mr-3 group-hover:scale-110 transition-transform" />
+                <Github className="w-4 h-4 mr-3 text-foreground group-hover:scale-110 transition-transform" />
                 <span className="font-medium">Check GitHub</span>
               </a>
             </Button>
             <Button
               variant="outline"
-              className="w-full justify-start h-12 hover:bg-blue-600/10 hover:border-blue-600 transition-all duration-300 group"
+              className="w-full justify-start h-12 hover:bg-accent-light hover:border-accent transition-all duration-300 group"
               asChild
             >
               <a
@@ -106,7 +106,7 @@ export const ContactInfo = () => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Linkedin className="w-4 h-4 mr-3 text-blue-600 group-hover:scale-110 transition-transform" />
+                <Linkedin className="w-4 h-4 mr-3 text-accent group-hover:scale-110 transition-transform" />
                 <span className="font-medium">Connect LinkedIn</span>
               </a>
             </Button>

@@ -6,7 +6,7 @@ export const AuthorSection = () => {
     <div className="flex items-center gap-3">
       <Avatar className="w-10 h-10">
         <AvatarImage src="https://github.com/shadcn.png" />
-        <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-500 text-white font-semibold">
+        <AvatarFallback className="bg-gradient-to-br from-primary to-accent text-primary-foreground font-semibold">
           AD
         </AvatarFallback>
       </Avatar>

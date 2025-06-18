@@ -346,7 +346,7 @@ export function Header({ children }: { children: React.ReactNode }) {
                   <div className="flex flex-col">
                     <span className="font-medium">{post.title}</span>
                     <span className="text-xs text-muted-foreground">
-                      by {post.author?.user?.name || "Anonymous"}
+                      by {post.author?.name || "Anonymous"}
                     </span>
                   </div>
                 </CommandItem>
@@ -391,10 +391,10 @@ export function Header({ children }: { children: React.ReactNode }) {
                   <User className="mr-2 h-4 w-4" />
                   <div className="flex flex-col">
                     <span className="font-medium">
-                      {author.user?.name || "Anonymous"}
+                      {author.name || "Anonymous"}
                     </span>
                     <span className="text-xs text-muted-foreground">
-                      {author._count?.posts || 0} articles
+                      {author._count?.blogPosts || 0} articles
                     </span>
                   </div>
                 </CommandItem>

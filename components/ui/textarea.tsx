@@ -1,18 +1,32 @@
-import * as React from "react"
-
-import { cn } from "@/lib/utils"
+import * as React from "react";
+import { cn } from "@/lib/utils";
 
 function Textarea({ className, ...props }: React.ComponentProps<"textarea">) {
   return (
     <textarea
       data-slot="textarea"
       className={cn(
-        "border-input placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:bg-input/30 flex field-sizing-content min-h-16 w-full rounded-md border bg-transparent px-3 py-2 text-base shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
+        // Base styles with consistent spacing to match input
+        "flex min-h-20 w-full rounded-lg border bg-transparent px-3 py-2 text-sm shadow-sm transition-all duration-200 outline-none resize-y",
+        // Color scheme specific with better contrast
+        "border-input bg-background dark:bg-background/50",
+        // Placeholder styles
+        "placeholder:text-muted-foreground",
+        // Focus states with consistent ring system (matches input)
+        "focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/20 focus-visible:ring-offset-0",
+        // Error states with proper contrast
+        "aria-invalid:border-destructive aria-invalid:ring-2 aria-invalid:ring-destructive/20",
+        // Hover states for better interactivity
+        "hover:border-input/80 hover:shadow-md",
+        // Disabled states with consistent opacity
+        "disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-muted/50",
+        // Responsive and accessibility improvements
+        "md:text-sm",
         className
       )}
       {...props}
     />
-  )
+  );
 }
 
-export { Textarea }
+export { Textarea };

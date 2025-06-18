@@ -1,3 +1,5 @@
+import { BlogPost } from "./blog";
+
 export interface User {
   id: string;
   name?: string;
@@ -16,6 +18,7 @@ export interface User {
   badges: string[];
   createdAt: Date;
   updatedAt: Date;
+  posts?: BlogPost[];
 }
 
 export interface UserStats {

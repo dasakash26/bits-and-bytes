@@ -30,7 +30,7 @@ export default function Home() {
         {/* About Section */}
         <section
           id="about"
-          className="container mx-auto px-4 py-20 bg-muted/20"
+          className="container mx-auto px-4 py-20 bg-secondary/30"
         >
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16">

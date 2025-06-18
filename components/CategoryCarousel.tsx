@@ -14,11 +14,7 @@ async function getPostsByCategory(categoryId: string, limit: number) {
         }
       : {},
     include: {
-      author: {
-        include: {
-          user: true,
-        },
-      },
+      author: true,
       category: true,
     },
     take: limit,

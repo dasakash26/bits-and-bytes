@@ -15,12 +15,11 @@ export default async function BlogPage({
   const post = await prisma.blogPost.findUnique({
     where: { id: postId },
     include: {
-      author: {
-        include: {
-          user: true,
-        },
-      },
+      author: true,
       category: true,
+      likes:true,
+      savedBy: true,
+      views: true,
       comments: {
         include: {
           author: true,
@@ -47,7 +46,7 @@ export default async function BlogPage({
         <article className="space-y-8">
           {/* Article Header */}
           <header className="space-y-6">
-            <AuthorInfo post={post as any} showMoreButton={false} />
+            <AuthorInfo post={post} showMoreButton={false} />
 
             <h1 className="text-4xl font-bold leading-tight">{post.title}</h1>
 

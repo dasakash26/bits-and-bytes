@@ -26,10 +26,10 @@ export const PostCard = ({
   onBookmarkToggle,
 }: PostCardProps) => {
   return (
-    <Card className="bg-card border-border shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer group hover:border-primary/30 overflow-hidden p-0">
+    <Card className="group bg-card border-border shadow-elevation-interactive hover:shadow-elevation-high hover:border-primary/30 transition-all duration-300 cursor-pointer overflow-hidden p-0">
       <CardContent className="p-0">
         {/* Author Info at Top */}
-        <div className="p-4 pb-3 border-b border-border bg-gradient-to-r from-transparent to-muted/20">
+        <div className="p-4 pb-3 border-b border-border bg-gradient-to-r from-transparent via-muted/10 to-muted/20">
           <AuthorInfo post={post} />
         </div>
 
@@ -42,9 +42,9 @@ export const PostCard = ({
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 cursor-pointer"
               onClick={onPostClick}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            <div className="absolute top-3 right-3 bg-black/50 backdrop-blur-sm rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <TrendingUp className="w-4 h-4 text-white" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="absolute top-3 right-3 bg-background/80 backdrop-blur-sm rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-elevation-medium">
+              <TrendingUp className="w-4 h-4 text-primary" />
             </div>
           </div>
         )}
@@ -100,7 +100,7 @@ export const PostCard = ({
           <PostActions
             isLiked={isLiked}
             onLikeToggle={onLikeToggle}
-            likeCount={post.likeCount}
+            likeCount={post.likes?.length || 0}
             commentCount={post.comments?.length || 0}
             isBookmarked={isBookmarked}
             onBookmarkToggle={onBookmarkToggle}

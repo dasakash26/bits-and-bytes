@@ -6,12 +6,12 @@ import { CategoryPageClient } from "./CategoryPageClient";
 
 export function generateColor(len: number) {
   const colors = [
-    "from-blue-500 to-purple-500",
-    "from-pink-500 to-orange-500",
-    "from-green-500 to-teal-500",
-    "from-yellow-500 to-red-500",
-    "from-indigo-500 to-blue-500",
-    "from-purple-500 to-pink-500",
+    "from-primary to-accent",
+    "from-destructive to-warning",
+    "from-success to-accent",
+    "from-warning to-destructive",
+    "from-accent to-primary",
+    "from-primary to-destructive",
   ];
   return colors[len % colors.length];
 }
@@ -27,13 +27,11 @@ export default async function CategoryPage({
     include: {
       posts: {
         include: {
-          author: {
-            include: {
-              user: true,
-            },
-          },
+          author: true,
           category: true,
           comments: true,
+          likes: true,
+          views: true,
         },
       },
     },

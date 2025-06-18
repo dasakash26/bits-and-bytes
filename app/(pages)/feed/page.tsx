@@ -10,12 +10,7 @@ async function getPosts(): Promise<BlogPost[]> {
   try {
     const posts = await prisma.blogPost.findMany({
       include: {
-        author: {
-          include: {
-            user: true,
-          },
-        },
-        category: true,
+        author: true,
         comments: {
           include: {
             author: true,
@@ -26,6 +21,9 @@ async function getPosts(): Promise<BlogPost[]> {
             },
           },
         },
+        category: true,
+        likes: true,
+        views: true,
       },
       orderBy: {
         date: "desc",

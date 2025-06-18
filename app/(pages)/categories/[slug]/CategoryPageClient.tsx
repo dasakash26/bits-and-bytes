@@ -6,15 +6,8 @@ import { Grid, List } from "lucide-react";
 import { PostCard } from "@/components/Cards/PostCard";
 import { BlogPost } from "@/types/blog";
 
-interface CategoryPageClientProps {
-  category: {
-    id: string;
-    name: string;
-    posts: BlogPost[];
-  };
-}
 
-export function CategoryPageClient({ category }: CategoryPageClientProps) {
+export function CategoryPageClient({ category }: {category: { name: string; posts: BlogPost[] } }) {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
 
   return (

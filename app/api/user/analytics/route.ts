@@ -14,41 +14,28 @@ export async function GET(request: NextRequest) {
     const user = await prisma.user.findUnique({
       where: { email },
       include: {
-        author: {
+        posts: {
           include: {
-            posts: {
-              include: {
-                comments: true,
-              },
-            },
+            views: true,
+            comments: true,
+            likes: true,
           },
         },
-        comments: true,
       },
     });
 
-    if (!user || !user.author) {
-      return NextResponse.json({
-        totalPosts: 0,
-        totalViews: 0,
-        totalLikes: 0,
-        totalComments: 0,
-        postsGrowth: 0,
-        viewsGrowth: 0,
-        likesGrowth: 0,
-        commentsGrowth: 0,
-      });
-    }
-
     // Calculate analytics
-    const posts = user.author.posts;
-    const totalPosts = posts.length;
-    const totalViews = posts.reduce((sum, post) => sum + post.viewCount, 0);
-    const totalLikes = posts.reduce((sum, post) => sum + post.likeCount, 0);
-    const totalComments = posts.reduce(
+    const posts = user?.posts;
+    const totalPosts = posts?.length;
+    const totalViews = posts?.reduce(
+      (sum, post) => sum + post.views.length,
+      0
+    ) ?? 0;
+    const totalLikes = posts?.reduce((sum, post) => sum + post.likes.length, 0) ?? 0;
+    const totalComments = posts?.reduce(
       (sum, post) => sum + post.comments.length,
       0
-    );
+    ) ?? 0;
 
     // Calculate growth percentages (simplified - comparing to previous month)
     const currentDate = new Date();
@@ -58,49 +45,38 @@ export async function GET(request: NextRequest) {
       1
     );
 
-    const recentPosts = posts.filter(
+    const recentPosts = posts?.filter(
       (post) => new Date(post.createdAt) >= lastMonth
     );
-    const recentViews = recentPosts.reduce(
-      (sum, post) => sum + post.viewCount,
+    const recentViews = recentPosts?.reduce(
+      (sum, post) => sum + post.views.length,
       0
-    );
-    const recentLikes = recentPosts.reduce(
-      (sum, post) => sum + post.likeCount,
+    ) ?? 0;
+    const recentLikes = recentPosts?.reduce(
+      (sum, post) => sum + post.likes.length,
       0
-    );
-    const recentComments = recentPosts.reduce(
+    ) ?? 0;
+    const recentComments = recentPosts?.reduce(
       (sum, post) => sum + post.comments.length,
       0
-    );
+    ) ?? 0;
 
-    // Simple growth calculation (you can make this more sophisticated)
-    const postsGrowth =
-      recentPosts.length > 0
-        ? Math.round(
-            (recentPosts.length /
-              Math.max(totalPosts - recentPosts.length, 1)) *
-              100
-          )
-        : 0;
-    const viewsGrowth =
-      recentViews > 0
-        ? Math.round(
-            (recentViews / Math.max(totalViews - recentViews, 1)) * 100
-          )
-        : 0;
-    const likesGrowth =
-      recentLikes > 0
-        ? Math.round(
-            (recentLikes / Math.max(totalLikes - recentLikes, 1)) * 100
-          )
-        : 0;
-    const commentsGrowth =
-      recentComments > 0
-        ? Math.round(
-            (recentComments / Math.max(totalComments - recentComments, 1)) * 100
-          )
-        : 0;
+    // Helper function to calculate growth percentage
+    const calculateGrowth = (recent: number, total: number, recentCount: number) => {
+      if (recent <= 0) return 0;
+      const previous = Math.max(total - recent, 1);
+      return Math.round((recent / previous) * 100);
+    };
+
+    const recentPostsCount = recentPosts?.length ?? 0;
+    const totalPostsCount = totalPosts ?? 0;
+    const totalLikesCount = totalLikes ?? 0;
+    const totalCommentsCount = totalComments ?? 0;
+
+    const postsGrowth = calculateGrowth(recentPostsCount, totalPostsCount, recentPostsCount);
+    const viewsGrowth = calculateGrowth(recentViews, totalViews, recentViews);
+    const likesGrowth = calculateGrowth(recentLikes, totalLikesCount, recentLikes);
+    const commentsGrowth = calculateGrowth(recentComments, totalCommentsCount, recentComments);
 
     return NextResponse.json({
       totalPosts,

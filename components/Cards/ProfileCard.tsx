@@ -26,10 +26,10 @@ const iconMap = {
 };
 
 const colorMap = {
-  TrendingUp: "from-blue-500 to-cyan-500",
-  Eye: "from-emerald-500 to-teal-500",
-  Search: "from-orange-500 to-red-500",
-  Heart: "from-purple-500 to-pink-500",
+  TrendingUp: "from-primary to-accent",
+  Eye: "from-success to-accent",
+  Search: "from-warning to-destructive",
+  Heart: "from-primary to-destructive",
 };
 
 interface Analytics {

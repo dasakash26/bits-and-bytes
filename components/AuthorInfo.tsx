@@ -18,10 +18,7 @@ export const AuthorInfo = ({
       <div className="flex items-center gap-4">
         <Avatar className="w-12 h-12 ring-2 ring-primary/20">
           <AvatarImage
-            src={
-              post.author.avatar ||
-              "https://github.com/shadcn.png"
-            }
+            src={post.author.image || "https://github.com/shadcn.png"}
           />
           <AvatarFallback className="bg-gradient-to-br from-primary to-primary/80 text-primary-foreground font-semibold">
             {post.author.name?.[0]?.toUpperCase() || "U"}
@@ -36,10 +33,8 @@ export const AuthorInfo = ({
               year: "numeric",
             })}
             <span>•</span>
-            {post.readTime}
-            <span>•</span>
             <Eye className="w-3 h-3" />
-            <span>{post.viewCount} views</span>
+            <span>{post?.views?.length??0} views</span>
           </div>
         </div>
       </div>

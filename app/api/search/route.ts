@@ -49,11 +49,7 @@ export async function GET(request: NextRequest) {
             ],
           },
           include: {
-            author: {
-              include: {
-                user: true,
-              },
-            },
+            author: true,
           },
           take: 10,
         }),
@@ -78,20 +74,18 @@ export async function GET(request: NextRequest) {
           take: 5,
         }),
 
-        // Search authors
-        prisma.author.findMany({
+        // Search authors (users who have written posts)
+        prisma.user.findMany({
           where: {
             OR: [
-              {
-                user: {
-                  name: { contains: sanitizedQuery, mode: "insensitive" },
-                },
-              },
+              { name: { contains: sanitizedQuery, mode: "insensitive" } },
               { bio: { contains: sanitizedQuery, mode: "insensitive" } },
             ],
+            posts: {
+              some: {}, // Only users who have written at least one post
+            },
           },
           include: {
-            user: true,
             _count: {
               select: {
                 posts: true,

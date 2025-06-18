@@ -29,7 +29,7 @@ import { AuthorSection } from "./form/AuthorSection";
 import { ContentEditor } from "./form/ContentEditor";
 import { usePostForm } from "@/hooks/usePostForm";
 import { generatePostSuggestions } from "@/lib/gemini";
-import { submitBlogAction } from "@/app/actions/submitBlog";
+import { submitBlogAction } from "@/app/actions/blog.actions";
 import { toast } from "sonner";
 
 // Define the props for the PostForm component

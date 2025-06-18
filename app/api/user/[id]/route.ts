@@ -12,23 +12,85 @@ export async function GET(
       return NextResponse.json({ error: "id is required" }, { status: 400 });
     }
 
-    // Find user by id or email
     const user = await prisma.user.findFirst({
       where: {
         OR: [{ id: id }, { email: id }],
       },
       include: {
-        author: {
+        posts: {
           include: {
-            posts: {
-              include: {
-                category: true,
-                comments: true,
-              },
-              orderBy: {
-                createdAt: "desc",
+            author: {
+              select: {
+                id: true,
+                name: true,
+                image: true,
+                username: true,
               },
             },
+            category: {
+              select: {
+                id: true,
+                name: true,
+                description: true,
+              },
+            },
+            likes: {
+              select: {
+                id: true,
+                userId: true,
+              },
+            },
+            comments: {
+              select: {
+                id: true,
+              },
+            },
+            views: {
+              select: {
+                id: true,
+              },
+            },
+          },
+          orderBy: {
+            createdAt: "desc",
+          },
+        },
+        savedPosts: {
+          include: {
+            author: {
+              select: {
+                id: true,
+                name: true,
+                image: true,
+                username: true,
+              },
+            },
+            category: {
+              select: {
+                id: true,
+                name: true,
+                description: true,
+              },
+            },
+            likes: {
+              select: {
+                id: true,
+                userId: true,
+              },
+            },
+            comments: {
+              select: {
+                id: true,
+              },
+            },
+            views: {
+              select: {
+                id: true,
+              },
+            },
+          },
+          orderBy: {
+            createdAt: "desc",
           },
         },
       },
