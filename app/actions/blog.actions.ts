@@ -7,6 +7,7 @@ import {
   sendBlogPublishedEmail,
   sendNewPostNotificationToAdmin,
 } from "@/lib/email-templates";
+import { User } from "@/types/user";
 
 export async function submitBlogAction(
   postData: Omit<BlogPostSchema, "id" | "authorId">
@@ -16,7 +17,7 @@ export async function submitBlogAction(
     throw new Error("You must be logged in to submit a blog post.");
   }
 
-  const user: any = await prisma.user.findUnique({
+  const user= await prisma.user.findUnique({
     where: { id: session.user.id },
     include: {
       posts: true,
@@ -25,18 +26,6 @@ export async function submitBlogAction(
 
   if (!user) {
     return "User not found in database.";
-  }
-
-  //@security
-  //one can submit 5 posts
-  if (user?.blogPost.length >= 5) {
-    throw new Error(
-      "You have reached the limit of 5 posts you need admin permission to post more."
-    );
-  }
-
-  if (!user) {
-    throw new Error("User not found in database.");
   }
 
   let category = await prisma.category.findUnique({
