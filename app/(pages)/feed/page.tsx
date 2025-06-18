@@ -30,7 +30,7 @@ async function getPosts(): Promise<BlogPost[]> {
         date: "desc",
       },
     });
-
+    console.log("Fetched posts in feed:", posts);
     return posts;
   } catch (error) {
     console.error("Error fetching posts:", error);
