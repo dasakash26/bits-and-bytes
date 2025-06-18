@@ -32,6 +32,7 @@ export default async function CategoryPage({
           comments: true,
           likes: true,
           views: true,
+          savedBy: true,
         },
       },
     },
@@ -80,7 +81,6 @@ export default async function CategoryPage({
           <CategoryCarousel categoryId={category.id} />
         </div>
 
-        {/* Client Component for Interactive Features */}
         <CategoryPageClient category={category} />
       </div>
     </div>

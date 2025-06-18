@@ -24,6 +24,7 @@ async function getPosts(): Promise<BlogPost[]> {
         category: true,
         likes: true,
         views: true,
+        savedBy: true,
       },
       orderBy: {
         date: "desc",
