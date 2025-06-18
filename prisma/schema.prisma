@@ -26,12 +26,12 @@ model User {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
-  accounts  Account[]
-  sessions  Session[]
-  comments  Comment[]
-  likes     Like[]
-  views     View[]
-  posts BlogPost[]
+  accounts   Account[]
+  sessions   Session[]
+  comments   Comment[]
+  likes      Like[]
+  views      View[]
+  posts      BlogPost[]
   savedPosts BlogPost[] @relation("SavedPosts")
 }
 
@@ -86,9 +86,9 @@ model BlogPost {
   tags      String[]
 
   authorId   String
-  author     User     @relation(fields: [authorId], references: [id])
+  author     User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
   categoryId String
-  category   Category @relation(fields: [categoryId], references: [id])
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   savedBy    User[]   @relation("SavedPosts")
   likes      Like[]
   views      View[]
@@ -114,9 +114,9 @@ model Comment {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  author  User      @relation(fields: [authorId], references: [id])
-  post    BlogPost  @relation(fields: [postId], references: [id])
-  parent  Comment?  @relation("CommentReplies", fields: [parentId], references: [id])
+  author  User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  post    BlogPost  @relation(fields: [postId], references: [id], onDelete: Cascade)
+  parent  Comment?  @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
   replies Comment[] @relation("CommentReplies")
 }
 
@@ -126,8 +126,8 @@ model Like {
   postId    String
   createdAt DateTime @default(now())
 
-  user User     @relation(fields: [userId], references: [id])
-  post BlogPost @relation(fields: [postId], references: [id])
+  user User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post BlogPost @relation(fields: [postId], references: [id], onDelete: Cascade)
 
   @@unique([userId, postId])
 }
@@ -138,8 +138,8 @@ model View {
   postId    String
   createdAt DateTime @default(now())
 
-  user User     @relation(fields: [userId], references: [id])
-  post BlogPost @relation(fields: [postId], references: [id])
+  user User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post BlogPost @relation(fields: [postId], references: [id], onDelete: Cascade)
 
   @@unique([userId, postId])
 }

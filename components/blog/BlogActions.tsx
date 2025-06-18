@@ -7,13 +7,24 @@ import { useSession } from "next-auth/react";
 import { toggleLike, toggleSave } from "@/app/actions/like.actions";
 import { deleteBlogAction } from "@/app/actions/blog.actions";
 import { Button } from "@/components/ui/button";
-import { Trash2 } from "lucide-react";
+import { Trash2, AlertTriangle } from "lucide-react";
 import { useRouter } from "next/navigation";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { toast } from "sonner";
 
 export const BlogActions = ({ post }: { post: BlogPost }) => {
   const [isLiked, setIsLiked] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const session = useSession();
   const router = useRouter();
 
@@ -39,9 +50,11 @@ export const BlogActions = ({ post }: { post: BlogPost }) => {
 
     try {
       await toggleLike(post.id);
+      toast.success(isLiked ? "Like removed" : "Post liked!");
     } catch (error) {
       setIsLiked(previousLikedState);
       console.error("Failed to toggle like:", error);
+      toast.error("Failed to update like. Please try again.");
     }
   };
 
@@ -51,28 +64,24 @@ export const BlogActions = ({ post }: { post: BlogPost }) => {
 
     try {
       await toggleSave(post.id);
+      toast.success(isBookmarked ? "Bookmark removed" : "Post bookmarked");
     } catch (error) {
       setIsBookmarked(previousBookmarkedState);
       console.error("Failed to toggle bookmark:", error);
+      toast.error("Failed to update bookmark. Please try again.");
     }
   };
 
   const handleDelete = async () => {
-    if (
-      !confirm(
-        "Are you sure you want to delete this blog post? This action cannot be undone."
-      )
-    ) {
-      return;
-    }
-
     setIsDeleting(true);
     try {
       await deleteBlogAction(post.id);
+      toast.success("Blog post deleted successfully!");
+      setShowDeleteDialog(false);
       router.push("/feed");
     } catch (error) {
       console.error("Failed to delete blog post:", error);
-      alert("Failed to delete blog post. Please try again.");
+      toast.error("Failed to delete blog post. Please try again.");
     } finally {
       setIsDeleting(false);
     }
@@ -95,16 +104,45 @@ export const BlogActions = ({ post }: { post: BlogPost }) => {
       />
 
       {isAuthor && (
-        <Button
-          variant="destructive"
-          size="sm"
-          onClick={handleDelete}
-          disabled={isDeleting}
-          className="ml-4"
-        >
-          <Trash2 className="w-4 h-4 mr-2" />
-          {isDeleting ? "Deleting..." : "Delete"}
-        </Button>
+        <Dialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+          <DialogTrigger asChild>
+            <Button variant="destructive" size="sm" className="ml-4">
+              <Trash2 className="w-4 h-4 mr-2" />
+              Delete
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2">
+                <AlertTriangle className="w-5 h-5 text-destructive" />
+                Delete Blog Post
+              </DialogTitle>
+              <DialogDescription className="text-left">
+                Are you sure you want to delete "<strong>{post.title}</strong>"?
+                This action cannot be undone and will permanently remove the
+                post and all its comments.
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter className="flex-col-reverse sm:flex-row sm:justify-end gap-2">
+              <Button
+                variant="outline"
+                onClick={() => setShowDeleteDialog(false)}
+                disabled={isDeleting}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="destructive"
+                onClick={handleDelete}
+                disabled={isDeleting}
+                className="flex items-center gap-2"
+              >
+                <Trash2 className="w-4 h-4" />
+                {isDeleting ? "Deleting..." : "Delete Post"}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       )}
     </div>
   );

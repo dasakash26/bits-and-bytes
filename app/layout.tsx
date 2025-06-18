@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/Providers";
 import { StructuredData } from "@/components/StructuredData";
+import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -166,6 +167,7 @@ export default function RootLayout({
         <StructuredData type="website" />
         <StructuredData type="organization" />
         <Providers>{children}</Providers>
+        <Toaster />
       </body>
     </html>
   );
