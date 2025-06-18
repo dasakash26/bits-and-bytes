@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/select";
 import { Hash, X } from "lucide-react";
 import { useCategories } from "../../../hooks/useCategories";
+import { Category } from "@/types/blog";
 
 interface CategoryTagsSectionProps {
   selectedCategory: string;
@@ -59,7 +60,7 @@ export const CategoryTagsSection = ({
             </SelectTrigger>
             <SelectContent>
               {categories.length > 0 ? (
-                categories.map((category) => (
+                categories.map((category:Category) => (
                   <SelectItem key={category.id} value={category.id}>
                     {category.name}
                   </SelectItem>

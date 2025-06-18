@@ -172,7 +172,7 @@ export const PostForm = ({ onClose }: PostFormProps) => {
       const result = await submitBlogAction(postData);
 
       // Success - show toast notification with email confirmation status
-      if (result.emailSent) {
+      if (result) {
         toast.success("🎉 Blog Post Published!", {
           description:
             "Your post is live and a confirmation email has been sent to your inbox.",

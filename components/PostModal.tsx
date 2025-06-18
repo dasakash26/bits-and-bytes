@@ -164,8 +164,8 @@ export const PostModal = ({
               <PostActions
                 isLiked={isLiked}
                 onLikeToggle={onLikeToggle}
-                likeCount={post.likeCount}
-                commentCount={post.comments?.length || 0}
+                likeCount={post.likes.length ?? 0}
+                commentCount={post.comments?.length ?? 0}
                 showBorder={false}
               />
               <div className="flex items-center gap-2">

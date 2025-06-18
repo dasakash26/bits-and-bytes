@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { Categories } from "../types/blog";
+import { Category } from "../types/blog";
 
 export const useCategories = () => {
-  const [categories, setCategories] = useState<Categories>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
