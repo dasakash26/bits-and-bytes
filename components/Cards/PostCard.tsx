@@ -15,6 +15,7 @@ interface PostCardProps {
   isBookmarked: boolean;
   onLikeToggle: () => void;
   onBookmarkToggle: () => void;
+  likesCount?: number;
 }
 
 export const PostCard = ({
@@ -24,6 +25,7 @@ export const PostCard = ({
   isBookmarked,
   onLikeToggle,
   onBookmarkToggle,
+  likesCount,
 }: PostCardProps) => {
   return (
     <Card className="group bg-card border-border shadow-elevation-interactive hover:shadow-elevation-high hover:border-primary/30 transition-all duration-300 cursor-pointer overflow-hidden p-0">
@@ -100,8 +102,8 @@ export const PostCard = ({
           <PostActions
             isLiked={isLiked}
             onLikeToggle={onLikeToggle}
-            likeCount={post.likes?.length || 0}
-            commentCount={post.comments?.length || 0}
+            likeCount={likesCount ?? post.likes?.length ?? 0}
+            commentCount={post.comments?.length ?? 0}
             isBookmarked={isBookmarked}
             onBookmarkToggle={onBookmarkToggle}
           />

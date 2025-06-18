@@ -9,32 +9,57 @@ import { toggleLike, toggleSave } from "@/app/actions/like.actions";
 export const FeedPost = ({ post }: { post: BlogPost }) => {
   const [isLiked, setIsLiked] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
+  const [likesCount, setLikesCount] = useState(post.likes?.length || 0);
+  const [mounted, setMounted] = useState(false);
   const session = useSession();
 
   useEffect(() => {
-    post.likes.forEach((like) => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted || !session.data?.user?.id) return;
+
+    // Reset states when post or session changes
+    setIsLiked(false);
+    setIsBookmarked(false);
+    setLikesCount(post.likes?.length || 0);
+
+    // Check if current user liked this post
+    post.likes?.forEach((like) => {
       if (session.data?.user?.id === like.userId) {
         setIsLiked(true);
       }
     });
-  }, [post]);
+  }, [post, session.data?.user?.id, mounted]);
 
   useEffect(() => {
+    if (!mounted || !session.data?.user?.id) return;
+
+    // Check if current user bookmarked this post
     post?.savedBy?.forEach((save) => {
       if (session.data?.user?.id === save.id) {
         setIsBookmarked(true);
       }
     });
-  }, [post]);
+  }, [post, session.data?.user?.id, mounted]);
 
   const handleLikeToggle = async () => {
+    if (!session.data?.user?.id) return;
+
     const previousLikedState = isLiked;
+    const previousLikesCount = likesCount;
+
+    // Optimistically update UI
     setIsLiked(!isLiked);
+    setLikesCount((prevCount) => (isLiked ? prevCount - 1 : prevCount + 1));
 
     try {
       await toggleLike(post.id);
     } catch (error) {
+      // Revert on error
       setIsLiked(previousLikedState);
+      setLikesCount(previousLikesCount);
       console.error("Failed to toggle like:", error);
     }
   };
@@ -50,6 +75,32 @@ export const FeedPost = ({ post }: { post: BlogPost }) => {
       console.error("Failed to toggle bookmark:", error);
     }
   };
+
+  // Prevent hydration mismatch on Vercel
+  if (!mounted) {
+    return (
+      <PostModal
+        post={post}
+        isLiked={false}
+        isBookmarked={false}
+        onLikeToggle={() => {}}
+        onBookmarkToggle={() => {}}
+      >
+        <div>
+          <div className="mb-4" />
+          <PostCard
+            post={post}
+            onPostClick={() => {}}
+            isLiked={false}
+            isBookmarked={false}
+            onLikeToggle={() => {}}
+            onBookmarkToggle={() => {}}
+            likesCount={post.likes?.length || 0}
+          />
+        </div>
+      </PostModal>
+    );
+  }
 
   return (
     <PostModal
@@ -68,6 +119,7 @@ export const FeedPost = ({ post }: { post: BlogPost }) => {
           isBookmarked={isBookmarked}
           onLikeToggle={handleLikeToggle}
           onBookmarkToggle={handleBookmarkToggle}
+          likesCount={likesCount}
         />
       </div>
     </PostModal>

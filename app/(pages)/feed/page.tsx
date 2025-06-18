@@ -1,4 +1,3 @@
-"no-store";
 import React from "react";
 import { ProfileCard } from "@/components/Cards/ProfileCard";
 import { NewPostInput } from "@/components/post/NewPostInput";
@@ -6,6 +5,9 @@ import { FeedPost } from "@/components/FeedPost";
 import { TrendingCard } from "@/components/Cards/TrendingCard";
 import { prisma } from "@/lib/prisma";
 import { BlogPost } from "@/types/blog";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 async function getPosts(): Promise<BlogPost[]> {
   try {
@@ -30,11 +32,15 @@ async function getPosts(): Promise<BlogPost[]> {
       orderBy: {
         date: "desc",
       },
+      take: 20,
     });
     return posts;
   } catch (error) {
     console.error("Error fetching posts:", error);
-    return [];
+    if (process.env.VERCEL) {
+      return [];
+    }
+    throw error;
   }
 }
 
@@ -44,7 +50,7 @@ export default async function FeedPage() {
   time = Date.now() - time;
   console.log(">> Fetching posts took:", time, "ms");
   console.log(">> Fetched posts of length:", posts.length);
-  
+
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-6">
