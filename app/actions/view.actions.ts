@@ -6,9 +6,7 @@ import { revalidatePath } from "next/cache";
 export async function updateView(postId: string) {
   const session: any = await auth();
   if (!session?.user?.id) {
-    //unknown view add
-    session.user.id =
-      "unknown_view_user-" + Math.floor(Math.random() * 1000000);
+      return { success: false, message: "User not authenticated." }; 
   }
 
   const post = await prisma.blogPost.findUnique({
