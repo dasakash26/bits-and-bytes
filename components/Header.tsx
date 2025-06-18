@@ -384,7 +384,7 @@ export function Header({ children }: { children: React.ReactNode }) {
                   key={author.id}
                   onSelect={() => {
                     setIsSearchOpen(false);
-                    router.push(`/authors/${author.id}`);
+                    router.push(`/profile/${author.id}`);
                   }}
                   className="hover:bg-primary/10 transition-colors duration-200"
                 >
