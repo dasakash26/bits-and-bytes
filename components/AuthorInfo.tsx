@@ -3,6 +3,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal, Eye } from "lucide-react";
 import { BlogPost } from "../types/blog";
+import Link from "next/link";
 
 interface AuthorInfoProps {
   post: BlogPost;
@@ -16,6 +17,7 @@ export const AuthorInfo = ({
   return (
     <div className="flex items-center justify-between mb-4">
       <div className="flex items-center gap-4">
+        <Link href={`/profile/${post.author.id}`} className="flex items-center gap-4">
         <Avatar className="w-12 h-12 ring-2 ring-primary/20">
           <AvatarImage
             src={post.author.image || "https://github.com/shadcn.png"}
@@ -24,6 +26,7 @@ export const AuthorInfo = ({
             {post.author.name?.[0]?.toUpperCase() || "U"}
           </AvatarFallback>
         </Avatar>
+        </Link>
         <div>
           <div className="font-semibold text-lg">{post.author.name}</div>
           <div className="text-sm text-muted-foreground flex items-center gap-2">

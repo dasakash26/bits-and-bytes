@@ -21,8 +21,13 @@ export const CommentForm = ({
 
   const handleSubmit = () => {
     if (content.trim()) {
-      onSubmit(content);
-      setContent("");
+      try {
+        onSubmit(content.trim());
+        setContent("");
+      } catch (error) {
+        console.error("Error submitting comment:", error);
+      } finally {
+      }
     }
   };
 

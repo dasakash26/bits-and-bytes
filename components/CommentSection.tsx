@@ -9,8 +9,13 @@ import {
   handleLikeComment,
 } from "./comments/commentHandlers";
 
-
-export const CommentSection = ({ comments}:{comments:Comment[]}) => {
+export const CommentSection = ({
+  comments,
+  postId,
+}: {
+  comments: Comment[];
+  postId: string;
+}) => {
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
 
   return (
@@ -21,7 +26,7 @@ export const CommentSection = ({ comments}:{comments:Comment[]}) => {
         </h3>
 
         <CommentForm
-          onSubmit={(content) => handleAddComment(comments[0].postId, content, null)}
+          onSubmit={async (content) => await handleAddComment(postId, content, replyingTo)}
         />
       </div>
       <CommentList
