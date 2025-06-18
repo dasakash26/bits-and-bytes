@@ -6,6 +6,7 @@ import { prisma } from "@/lib/prisma";
 import { BlogActions } from "@/components/blog/BlogActions";
 import { BlogHeader } from "@/components/blog/BlogHeader";
 import { MarkdownContent } from "@/components/MarkdownContent";
+import { updateView } from "@/app/actions/view.actions";
 export default async function BlogPage({
   params,
 }: {
@@ -17,7 +18,7 @@ export default async function BlogPage({
     include: {
       author: true,
       category: true,
-      likes:true,
+      likes: true,
       savedBy: true,
       views: true,
       comments: {
@@ -36,6 +37,8 @@ export default async function BlogPage({
   if (!post || !post.excerpt) {
     notFound();
   }
+
+  await updateView(post.id);
 
   return (
     <div className="min-h-screen bg-background">

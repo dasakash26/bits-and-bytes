@@ -35,8 +35,6 @@ export async function updateView(postId: string) {
         userId: session.user.id,
       },
     });
+    return { success: true, message: "View count updated successfully." };
   }
-
-  revalidatePath(`/blog/${postId}`);
-  return { success: true, message: "View count updated successfully." };
 }
