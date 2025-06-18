@@ -7,7 +7,6 @@ import {
   sendBlogPublishedEmail,
   sendNewPostNotificationToAdmin,
 } from "@/lib/email-templates";
-import { User } from "@/types/user";
 
 export async function submitBlogAction(
   postData: Omit<BlogPostSchema, "id" | "authorId">
@@ -107,6 +106,8 @@ export async function submitBlogAction(
   }
 
   revalidatePath("/blog");
+  revalidatePath(`/blog/${res.id}`);
+  revalidatePath("/feed");
   return {
     ...res,
     emailSent,
