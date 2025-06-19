@@ -5,6 +5,7 @@ import { PostModal } from "./PostModal";
 import { PostCard } from "./Cards/PostCard";
 import { useSession } from "next-auth/react";
 import { toggleLike, toggleSave } from "@/app/actions/like.actions";
+import { toast } from "sonner";
 
 export const FeedPost = ({ post }: { post: BlogPost }) => {
   const [isLiked, setIsLiked] = useState(false);
@@ -45,7 +46,10 @@ export const FeedPost = ({ post }: { post: BlogPost }) => {
   }, [post, session.data?.user?.id, mounted]);
 
   const handleLikeToggle = async () => {
-    if (!session.data?.user?.id) return;
+    if (!session.data?.user?.id) {
+      toast.error("You must be logged in to like a post.");
+      return;
+    };
 
     const previousLikedState = isLiked;
     const previousLikesCount = likesCount;
@@ -65,6 +69,10 @@ export const FeedPost = ({ post }: { post: BlogPost }) => {
   };
 
   const handleBookmarkToggle = async () => {
+    if (!session.data?.user?.id) {
+      toast.error("You must be logged in to bookmark a post.");
+      return;
+    };
     const previousBookmarkedState = isBookmarked;
     setIsBookmarked(!isBookmarked);
 
